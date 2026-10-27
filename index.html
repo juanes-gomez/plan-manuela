@@ -1,0 +1,1348 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FFE1EB">
+<title>Manu Queen</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: banda rosa con escaneo 3D y HUD de cristal → navegación fija en píldoras → secciones a una columna de 1100px */
+:root{
+  --bg:#FFF6F8; --bg-2:#FDEAF1; --surface:#FFFFFF; --surface-2:#FCEFF4; --ink:#3A2230; --muted:#8B6A79; --line:#F1D6E0;
+  --pink:#F49CBB; --pink-ink:#BE3F74; --pink-soft:#FFE4ED; --lilac:#D9C9F6; --peach:#FFD9C9; --mint:#4FB38C; --on-pink:#3B0F27;
+  --hero-1:#FFE1EB; --hero-2:#F7E3FA; --hero-3:#FFF3F7; --hud-bg:rgba(255,255,255,.58); --hud-line:rgba(244,156,187,.45); --hud-ink:#3A2230; --hud-muted:#93707F;
+  --f-display:"Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --f-body:"Manrope", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-mono:"DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --r:18px; --r-sm:12px;
+  --g-top:rgba(255,255,255,.95); --g-bot:rgba(255,236,243,.66); --g-edge:#fff; --g-line:rgba(190,63,116,.14);
+  --g-depth:rgba(214,100,150,.18); --g-shadow:0 12px 26px -14px rgba(190,63,116,.45),0 2px 5px rgba(120,40,80,.08); --g-shine:rgba(255,255,255,.85);
+  --shadow:0 18px 40px -26px rgba(150,50,95,.45);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#170E14; --bg-2:#1E121A; --surface:#211520; --surface-2:#2A1B27; --ink:#FBEAF1; --muted:#C3A2B2; --line:#3B2734;
+    --pink:#F7A8C4; --pink-ink:#FF9CC3; --pink-soft:#3A1E2C; --lilac:#7E67B0; --peach:#7A4A3E; --mint:#6FD3A9; --on-pink:#3B0F27;
+    --hero-1:#2A1422; --hero-2:#22152E; --hero-3:#1A0F17; --hud-bg:rgba(40,22,34,.6); --hud-line:rgba(247,168,196,.3); --hud-ink:#FBEAF1; --hud-muted:#C9A6B6;
+    --g-top:rgba(255,255,255,.13); --g-bot:rgba(255,255,255,.03); --g-edge:rgba(255,255,255,.22); --g-line:rgba(255,255,255,.1);
+    --g-depth:rgba(0,0,0,.45); --g-shadow:0 12px 26px -12px rgba(0,0,0,.85),0 2px 5px rgba(0,0,0,.4); --g-shine:rgba(255,255,255,.2);
+    --shadow:0 18px 40px -24px rgba(0,0,0,.8);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#170E14; --bg-2:#1E121A; --surface:#211520; --surface-2:#2A1B27; --ink:#FBEAF1; --muted:#C3A2B2; --line:#3B2734;
+  --pink:#F7A8C4; --pink-ink:#FF9CC3; --pink-soft:#3A1E2C; --lilac:#7E67B0; --peach:#7A4A3E; --mint:#6FD3A9; --on-pink:#3B0F27;
+  --hero-1:#2A1422; --hero-2:#22152E; --hero-3:#1A0F17; --hud-bg:rgba(40,22,34,.6); --hud-line:rgba(247,168,196,.3); --hud-ink:#FBEAF1; --hud-muted:#C9A6B6;
+  --g-top:rgba(255,255,255,.13); --g-bot:rgba(255,255,255,.03); --g-edge:rgba(255,255,255,.22); --g-line:rgba(255,255,255,.1);
+  --g-depth:rgba(0,0,0,.45); --g-shadow:0 12px 26px -12px rgba(0,0,0,.85),0 2px 5px rgba(0,0,0,.4); --g-shine:rgba(255,255,255,.2);
+  --shadow:0 18px 40px -24px rgba(0,0,0,.8);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{background:radial-gradient(900px 600px at 90% 40%,color-mix(in srgb,var(--pink) 14%,transparent),transparent 62%),radial-gradient(800px 600px at 0% 80%,color-mix(in srgb,var(--lilac) 18%,transparent),transparent 62%),var(--bg);background-attachment:fixed;color:var(--ink);font:400 16px/1.6 var(--f-body);-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+h1,h2,h3,h4{margin:0;text-wrap:balance}
+h2{font:400 clamp(34px,5.4vw,54px)/1 var(--f-display);letter-spacing:-.01em}
+h2 em{font-style:italic;color:var(--pink-ink)}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--pink-ink);outline-offset:3px;border-radius:8px}
+.wrap{max-width:1100px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{font:700 11.5px/1 var(--f-body);letter-spacing:.16em;text-transform:uppercase;color:var(--pink-ink)}
+.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+.card{background:color-mix(in srgb,var(--surface) 88%,transparent);border:1px solid var(--line);border-radius:var(--r);padding:22px;box-shadow:var(--shadow)}
+section{scroll-margin-top:84px}
+.sec{padding-block:64px 4px}
+.sec-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px 28px;margin-bottom:24px}
+.sec-head h2{margin-top:10px}
+.sec-head p{max-width:48ch;color:var(--muted)}
+
+/* ================= BOTONES DE CRISTAL ================= */
+.glass{
+  position:relative;overflow:hidden;isolation:isolate;cursor:pointer;
+  background:linear-gradient(180deg,var(--g-top),var(--g-bot));border:1px solid var(--g-line);
+  box-shadow:inset 0 1px 0 var(--g-edge),inset 0 -6px 12px -6px var(--g-depth),var(--g-shadow);
+  backdrop-filter:blur(14px) saturate(170%);-webkit-backdrop-filter:blur(14px) saturate(170%);
+  transition:transform .28s cubic-bezier(.2,.8,.2,1),box-shadow .28s,background .28s,color .2s,border-color .2s;color:var(--ink)
+}
+.glass::before{content:"";position:absolute;left:1px;right:1px;top:1px;height:52%;border-radius:inherit;border-bottom-left-radius:40% 30%;border-bottom-right-radius:40% 30%;background:linear-gradient(180deg,var(--g-shine),transparent);pointer-events:none;z-index:-1}
+.glass::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,.6) 50%,transparent 62%);transform:translateX(-130%);transition:transform .8s cubic-bezier(.2,.7,.2,1);pointer-events:none;z-index:-1}
+.glass:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--pink) 70%,transparent);box-shadow:inset 0 1px 0 var(--g-edge),inset 0 -6px 12px -6px var(--g-depth),0 18px 32px -14px rgba(232,104,152,.55),0 3px 6px rgba(120,40,80,.08)}
+.glass:hover::after{transform:translateX(130%)}
+.glass:active{transform:translateY(1px) scale(.97);box-shadow:inset 0 2px 8px var(--g-depth),0 4px 10px -6px rgba(120,40,80,.3)}
+.glass.is-on{
+  background:linear-gradient(180deg,#FFD3E2 0%,#F7A3C2 52%,#EC7FA9 100%);color:var(--on-pink);border-color:rgba(255,190,214,.95);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.85),inset 0 -6px 14px -4px rgba(176,40,98,.35),0 12px 26px -10px rgba(236,127,169,.75),0 0 0 1px rgba(236,127,169,.2)
+}
+.glass.is-on::before{background:linear-gradient(180deg,rgba(255,255,255,.75),rgba(255,255,255,0))}
+.pill{border-radius:999px;padding:9px 16px;font-weight:700;font-size:14px;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+@media (prefers-reduced-motion: reduce){.glass::after{display:none}.glass{transition:none}}
+
+/* ================= HERO 3D ================= */
+.hero{position:relative;overflow:hidden;background:radial-gradient(70% 90% at 15% 10%,var(--hero-1),transparent 70%),radial-gradient(60% 80% at 90% 30%,var(--hero-2),transparent 70%),var(--hero-3);border-bottom:1px solid var(--line)}
+.hero .wrap{position:relative;padding-block:28px 34px;display:grid;gap:18px}
+.brand{display:flex;align-items:center;gap:12px;font:700 12px/1 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--hud-muted)}
+.brand b{font:400 22px/1 var(--f-display);letter-spacing:0;text-transform:none;color:var(--on-pink);background:linear-gradient(180deg,#FFD3E2,#F49CBB);padding:6px 10px 5px;border-radius:10px;box-shadow:inset 0 1px 0 #fff,0 6px 14px -6px rgba(236,127,169,.8)}
+.hero-title{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:10px 20px}
+.hero-title h1{font:400 clamp(44px,8vw,86px)/.92 var(--f-display);letter-spacing:-.015em;color:var(--hud-ink)}
+.hero-title h1 em{color:var(--pink-ink)}
+.hero-title p{font-size:15px;color:var(--hud-muted);max-width:40ch}
+.head{position:relative;isolation:isolate;display:grid;gap:18px}
+.px{position:absolute;inset:-80px -20px -20px;overflow:hidden;pointer-events:none;z-index:-1}
+.px i{position:absolute;bottom:-14px;left:var(--x);width:var(--z);height:var(--z);border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#FFC1D6 55%,#F49CBB);box-shadow:0 0 10px rgba(244,156,187,.8);opacity:0;animation:pxUp var(--t) linear infinite;animation-delay:var(--dl)}
+@keyframes pxUp{0%{transform:translate(0,0);opacity:0}12%{opacity:var(--o)}82%{opacity:var(--o)}100%{transform:translate(var(--dx),-860px);opacity:0}}
+@keyframes spin{to{transform:rotate(1turn)}}
+@keyframes tw{0%,100%{opacity:.2;transform:scale(.6)}50%{opacity:1;transform:scale(1.25)}}
+
+.hud{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr) minmax(0,1fr);grid-template-areas:"l s r";gap:18px;align-items:center}
+.hud-l{grid-area:l}.hud-r{grid-area:r}.stage{grid-area:s}
+@media (max-width:860px){.hud{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"s s" "l r";gap:12px}}
+.stage{position:relative;height:560px;min-width:0}
+@media (max-width:860px){.stage{height:470px}}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y;cursor:grab;z-index:1}
+.stage canvas:active{cursor:grabbing}
+.stage.no3d canvas{display:none}
+.no3d-msg{display:none;position:absolute;inset:0;place-items:center;text-align:center;color:var(--hud-muted);font-size:14px;z-index:2;padding:24px}
+.stage.no3d .no3d-msg{display:grid}
+.scan-load{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);z-index:2;font:500 11px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--pink-ink);padding:9px 13px;border:1px solid var(--hud-line);border-radius:10px;background:var(--hud-bg);backdrop-filter:blur(8px);animation:tw 1.4s ease-in-out infinite}
+
+.rx{position:absolute;left:50%;top:47%;width:min(540px,100%);aspect-ratio:1;transform:translate(-50%,-50%) translate(calc(var(--px)*14px),calc(var(--py)*14px));pointer-events:none;z-index:0;transition:transform .5s ease-out}
+.rx>div{position:absolute;border-radius:50%}
+.rx-halo{inset:8%;background:radial-gradient(closest-side,rgba(255,170,205,.55),rgba(217,201,246,.25) 60%,transparent)}
+.rx-dash{inset:3%;border:1px dashed rgba(236,127,169,.45);animation:spin 70s linear infinite}
+.rx-track{inset:13%;border:1px solid rgba(236,127,169,.18)}
+.rx-sweep{inset:13%;background:conic-gradient(from 0deg,transparent 0deg,rgba(244,156,187,.35) 40deg,transparent 41deg);animation:spin 8s linear infinite;-webkit-mask:radial-gradient(closest-side,transparent 34%,#000 35%);mask:radial-gradient(closest-side,transparent 34%,#000 35%)}
+.rx-outer{inset:0;background:repeating-conic-gradient(rgba(236,127,169,.6) 0 .5deg,transparent .5deg 6deg);-webkit-mask:radial-gradient(closest-side,transparent 95.5%,#000 96%);mask:radial-gradient(closest-side,transparent 95.5%,#000 96%);animation:spin 120s linear infinite reverse}
+.rx-inner{inset:27%;border:1px solid rgba(217,201,246,.7);box-shadow:inset 0 0 50px rgba(255,190,214,.35)}
+.rx-orbit{inset:var(--i);border:1px solid rgba(236,127,169,.14);animation:spin var(--t) linear infinite;animation-delay:var(--dl,0s)}
+.rx-orbit.inv{animation-direction:reverse}
+.rx-orbit::after{content:"";position:absolute;left:calc(var(--d)/-2);top:calc(50% - var(--d)/2);width:var(--d);height:var(--d);border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#F49CBB);box-shadow:0 0 12px #F49CBB}
+.rx-tw{position:absolute;width:4px;height:4px;border-radius:50%;background:#fff;box-shadow:0 0 10px #FFB3CE;animation:tw 3.2s ease-in-out infinite;animation-delay:var(--dl,0s)}
+
+.stage-hud{position:absolute;inset:6px 0 auto;display:flex;justify-content:space-between;gap:8px;font:500 10.5px/1 var(--f-mono);letter-spacing:.08em;color:var(--hud-muted);z-index:2;pointer-events:none}
+.stage-hud b{color:var(--pink-ink);font-weight:500}
+.live{display:inline-flex;align-items:center;gap:6px}
+.live::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--pink);box-shadow:0 0 10px var(--pink);animation:tw 1.6s ease-in-out infinite}
+.stage-hint{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);font:600 11px/1 var(--f-body);letter-spacing:.06em;color:var(--hud-muted);z-index:2;pointer-events:none;white-space:nowrap}
+
+.hud-panel{position:relative;padding:18px;border-radius:20px;background:var(--hud-bg);border:1px solid var(--hud-line);box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 24px 44px -26px rgba(190,63,116,.55);backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);display:grid;gap:15px;min-width:0;z-index:1;color:var(--hud-ink)}
+.hud-panel::before,.hud-panel::after{content:"";position:absolute;width:18px;height:18px;border:2px solid var(--pink);pointer-events:none}
+.hud-panel::before{top:-1px;left:-1px;border-right:0;border-bottom:0;border-top-left-radius:20px}
+.hud-panel::after{bottom:-1px;right:-1px;border-left:0;border-top:0;border-bottom-right-radius:20px}
+.hud-h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.hud-h span:first-child{font:400 26px/1 var(--f-display);color:var(--pink-ink)}
+.hud-h span:last-child{font:500 10px/1 var(--f-mono);color:var(--hud-muted);letter-spacing:.06em}
+.st{display:grid;gap:5px}
+.st-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.st-l{font:700 10.5px/1.2 var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--hud-muted);min-width:0;overflow-wrap:anywhere}
+.hud-panel>*,.st-top>*{min-width:0}
+.hud-h{flex-wrap:wrap}
+.st-v{font:500 25px/1 var(--f-mono);font-variant-numeric:tabular-nums;color:var(--hud-ink)}
+.st-v small{font:600 12px/1 var(--f-body);color:var(--hud-muted);margin-left:4px}
+.dl{font:500 10.5px/1 var(--f-mono);padding:4px 6px;border-radius:6px;background:color-mix(in srgb,var(--pink) 14%,transparent);color:var(--hud-muted);white-space:nowrap}
+.dl.good{color:var(--mint);background:color-mix(in srgb,var(--mint) 15%,transparent)}
+.seg-bar{height:8px;border-radius:4px;background:color-mix(in srgb,var(--pink) 18%,transparent);position:relative;overflow:hidden}
+.seg-bar i{position:absolute;inset:0 auto 0 0;width:0;background:linear-gradient(90deg,#FFC8DB,#EC7FA9);box-shadow:0 0 12px rgba(236,127,169,.6);transition:width .8s cubic-bezier(.2,.7,.2,1)}
+.seg-bar b{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--hud-ink);opacity:.5;border-radius:2px}
+@media (max-width:860px){.st-l{letter-spacing:.04em;font-size:10px}.hud-panel{padding:14px;gap:12px}.st-v{font-size:19px}.hud-h span:first-child{font-size:22px}}
+
+.tags{position:absolute;inset:0;pointer-events:none;z-index:2}
+.zt{position:absolute;left:0;top:0;display:flex;align-items:center;gap:6px;transition:opacity .25s;will-change:transform;opacity:0}
+.zt-dot{width:9px;height:9px;border-radius:50%;background:var(--zc);box-shadow:0 0 0 3px color-mix(in srgb,var(--zc) 30%,transparent),0 0 12px var(--zc);flex:none}
+.zt-line{width:24px;height:1px;background:linear-gradient(90deg,var(--zc),transparent);flex:none}
+.zt-box{font:700 11px/1.25 var(--f-body);color:var(--hud-ink);background:var(--hud-bg);border:1px solid var(--hud-line);padding:5px 9px;border-radius:9px;white-space:nowrap;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.zt-box b{display:block;font:500 11px/1.2 var(--f-mono);color:var(--zc)}
+.zt.left{flex-direction:row-reverse}
+.zt.left .zt-line{background:linear-gradient(270deg,var(--zc),transparent)}
+@media (max-width:520px){.zt.minor{display:none}}
+
+.tl{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;position:relative;z-index:1}
+.tl .glass{border-radius:14px;padding:10px 18px;min-width:110px;text-align:center;font:700 14px/1.15 var(--f-body)}
+.tl .glass small{display:block;margin-top:4px;font:500 10px/1 var(--f-mono);opacity:.75}
+.xp{display:grid;justify-items:center;gap:8px;font-size:13px;color:var(--hud-muted);text-align:center}
+.xp b{color:var(--hud-ink)}
+.xp-bar{width:min(320px,100%);height:7px;border-radius:999px;background:color-mix(in srgb,var(--pink) 20%,transparent);overflow:hidden}
+.xp-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#FFC8DB,#EC7FA9);transition:width .6s}
+.badge{display:flex;align-items:center;justify-content:center;gap:12px;color:var(--pink)}
+.laurel{width:30px;height:60px;flex:none;filter:drop-shadow(0 0 8px rgba(236,127,169,.5))}
+.laurel--right{transform:scaleX(-1)}
+.badge__text{display:grid;justify-items:center;gap:6px;margin:0}
+.badge__num{font:400 clamp(40px,6vw,58px)/1 var(--f-display);color:var(--hud-ink);font-variant-numeric:tabular-nums}
+.badge__num em{color:var(--pink-ink)}
+.badge__label{font:700 11px/1.3 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--hud-muted);text-align:center}
+.proj-note{max-width:64ch;margin:0 auto;text-align:center;font-size:12.5px;color:var(--hud-muted)}
+@media (prefers-reduced-motion: reduce){.px{display:none}.rx-dash,.rx-sweep,.rx-outer,.rx-orbit,.rx-tw,.live::before,.scan-load{animation:none}}
+
+/* ================= NAV ================= */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 78%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;gap:8px;overflow-x:auto;padding-block:12px;scrollbar-width:none}
+.nav .wrap::-webkit-scrollbar{display:none}
+
+/* ================= CARTA ================= */
+.letter{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:860px){.letter{grid-template-columns:1fr}}
+.letter-body{display:grid;gap:14px;font-size:16.5px;max-width:64ch}
+.letter-body h2{font-size:clamp(40px,6vw,62px)}
+.sign{font:italic 400 26px/1.2 var(--f-display);color:var(--pink-ink)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;background:var(--pink-soft);color:var(--pink-ink);font:700 12.5px/1.2 var(--f-body)}
+.checks{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.checks li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start}
+.tick{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(180deg,#FFD3E2,#F49CBB);color:var(--on-pink);flex:none;box-shadow:inset 0 1px 0 #fff}
+.tick svg{width:13px;height:13px}
+
+.metrics{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.metric{display:grid;gap:10px;padding:18px;border-radius:var(--r);background:color-mix(in srgb,var(--surface) 90%,transparent);border:1px solid var(--line)}
+.metric.main{background:linear-gradient(160deg,var(--pink-soft),var(--surface));border-color:color-mix(in srgb,var(--pink) 60%,var(--line))}
+.metric .k{font:700 11px/1.3 var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.metric .v{font:500 34px/1 var(--f-mono);font-variant-numeric:tabular-nums}
+.metric .v small{font:600 13px var(--f-body);color:var(--muted);margin-left:4px}
+.metric .m{display:flex;gap:8px;align-items:flex-start;font-size:13.5px;color:var(--muted);padding-top:10px;border-top:1px dashed var(--line)}
+.metric .m b{color:var(--pink-ink);font:700 10.5px/1.6 var(--f-body);letter-spacing:.1em;text-transform:uppercase;flex:none}
+
+/* ================= HOY ================= */
+.today{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr) minmax(0,1fr);gap:14px}
+@media (max-width:900px){.today{grid-template-columns:1fr}}
+.count{display:grid;gap:6px;align-content:start}
+.count .big{font:400 86px/.9 var(--f-display);color:var(--pink-ink)}
+.drops{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:14px}
+.drop{aspect-ratio:1;border-radius:16px;display:grid;place-items:center;padding:0}
+.drop svg{width:52%;height:52%}
+.drop .f{fill:transparent;transition:fill .25s}
+.drop.is-on .f{fill:currentColor}
+.ring-row{display:flex;align-items:center;gap:16px}
+.ring{--p:0;width:78px;height:78px;border-radius:50%;background:conic-gradient(#EC7FA9 calc(var(--p)*1%),color-mix(in srgb,var(--pink) 18%,transparent) 0);display:grid;place-items:center;flex:none;transition:background .4s}
+.ring span{width:60px;height:60px;border-radius:50%;background:var(--surface);display:grid;place-items:center;font:500 15px/1 var(--f-mono)}
+.mini-list{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:6px;font-size:14px}
+.mini-list li{display:flex;justify-content:space-between;gap:10px;padding:8px 10px;border-radius:10px;background:var(--surface-2)}
+.mini-list li span:last-child{color:var(--muted);text-align:right;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mini-list li.done span:last-child{color:var(--pink-ink);font-weight:700}
+
+/* ================= PLAN ================= */
+.weeks{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px}
+.weeks .glass{border-radius:16px;padding:12px 18px;text-align:left;display:grid;gap:2px}
+.weeks .glass b{font:400 24px/1 var(--f-display)}
+.weeks .glass span{font-size:12px;opacity:.75}
+.week-info{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px;align-items:center;margin-bottom:18px}
+@media (max-width:860px){.week-info{grid-template-columns:1fr}}
+.macros{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+@media (max-width:520px){.macros{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.macro{padding:12px;border-radius:14px;background:var(--surface);border:1px solid var(--line)}
+.macro b{font:500 22px/1 var(--f-mono)}
+.macro b small{font:600 11px var(--f-body);color:var(--muted);margin-left:3px}
+.macro span{display:block;font-size:11.5px;color:var(--muted);margin-top:6px;line-height:1.3}
+.meal-tabs{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 10px;scrollbar-width:none}
+.meal-tabs::-webkit-scrollbar{display:none}
+.meal-tab{flex:none;border-radius:16px;padding:11px 15px;text-align:left;display:grid;gap:3px;min-width:130px}
+.meal-tab b{font:800 14.5px/1.15 var(--f-body)}
+.meal-tab span{font:500 11px/1 var(--f-mono);opacity:.75}
+.meal-tab.picked b::after{content:" ✓";color:var(--pink-ink)}
+.meal-note{display:flex;gap:14px;align-items:flex-start;padding:16px 18px;border-radius:16px;background:var(--pink-soft);margin:6px 0 14px;font-size:15px}
+.meal-note .q{font:400 44px/.6 var(--f-display);color:var(--pink-ink)}
+.opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.opt{display:flex;flex-direction:column;gap:12px;padding:18px;border-radius:var(--r);background:color-mix(in srgb,var(--surface) 92%,transparent);border:1px solid var(--line);transition:transform .25s,border-color .2s,box-shadow .25s;animation:rise .35s ease both;animation-delay:var(--d,0s)}
+@keyframes rise{from{opacity:.001;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){.opt{animation:none}}
+.opt:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:color-mix(in srgb,var(--pink) 50%,var(--line))}
+.opt.is-picked{border-color:#EC7FA9;box-shadow:0 0 0 3px color-mix(in srgb,#EC7FA9 25%,transparent)}
+.opt-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.opt-n{font:500 11px/1 var(--f-mono);color:var(--muted);letter-spacing:.06em}
+.lvl{font:700 10.5px/1 var(--f-body);letter-spacing:.1em;text-transform:uppercase;padding:5px 8px;border-radius:999px}
+.lvl-Liviana{background:color-mix(in srgb,var(--mint) 16%,transparent);color:var(--mint)}
+.lvl-Media{background:color-mix(in srgb,var(--lilac) 40%,transparent);color:color-mix(in srgb,var(--ink) 75%,var(--lilac))}
+.lvl-Completa{background:var(--pink-soft);color:var(--pink-ink)}
+.opt h3{font:400 25px/1.08 var(--f-display)}
+.ing{list-style:none;margin:0;padding:0;display:grid;gap:7px;flex:1;font-size:14.5px}
+.ing li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:9px}
+.ing li::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--pink);margin-top:8px}
+.opt .glass{border-radius:999px;padding:11px 14px;font-weight:800;font-size:14px;display:flex;justify-content:center;gap:8px}
+
+/* ================= REGISTRO ================= */
+.log{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+@media (max-width:860px){.log{grid-template-columns:1fr}}
+.rate{display:grid;gap:8px;padding-block:12px;border-bottom:1px dashed var(--line)}
+.rate:last-of-type{border-bottom:0}
+.rate h4{font:800 13px/1 var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.rate .row{display:flex;flex-wrap:wrap;gap:6px}
+.rate .glass{border-radius:999px;padding:7px 12px;font-size:13px;font-weight:700}
+.hist{list-style:none;margin:0;padding:0;display:grid;gap:8px;max-height:360px;overflow:auto}
+.hist li{padding:10px 12px;border-radius:12px;background:var(--surface-2);font-size:13.5px}
+.hist li b{display:block;font:500 12px/1.2 var(--f-mono);color:var(--pink-ink);margin-bottom:4px}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.actions .glass{border-radius:999px;padding:10px 16px;font-weight:800;font-size:14px}
+.actions .glass.danger.armed{background:linear-gradient(180deg,#5A2338,#3B0F27);color:#FFE4ED;border-color:#5A2338}
+
+/* ================= SUPLEMENTOS / NOTAS ================= */
+.supps{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.supp{display:grid;gap:10px;align-content:start}
+.supp h3{font:400 28px/1 var(--f-display)}
+.supp .dose{font:700 13.5px/1.4 var(--f-body);color:var(--pink-ink)}
+.supp p{font-size:14.5px;color:var(--muted)}
+.new{font:700 10px/1 var(--f-body);letter-spacing:.12em;text-transform:uppercase;padding:5px 8px;border-radius:999px;background:linear-gradient(180deg,#FFD3E2,#F49CBB);color:var(--on-pink);justify-self:start}
+.acc{display:grid;gap:10px}
+.acc details{border:1px solid var(--line);border-radius:16px;background:color-mix(in srgb,var(--surface) 92%,transparent);overflow:hidden;transition:border-color .2s}
+.acc details[open]{border-color:color-mix(in srgb,var(--pink) 55%,var(--line));box-shadow:var(--shadow)}
+.acc summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:14px;padding:16px 18px;cursor:pointer;font:700 16px/1.3 var(--f-body)}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary .pm{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font:500 18px/1 var(--f-mono);color:var(--pink-ink)}
+.acc details[open] summary .pm{transform:rotate(45deg)}
+.acc .body{padding:0 18px 18px;display:grid;gap:10px;color:var(--muted);max-width:72ch}
+.acc .body p{font-size:15px}
+.acc.notes summary{font:400 24px/1.1 var(--f-display)}
+
+/* ================= MERCADO ================= */
+.shop-top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center;margin-bottom:16px}
+@media (max-width:640px){.shop-top{grid-template-columns:1fr}}
+.bar{height:10px;border-radius:999px;background:color-mix(in srgb,var(--pink) 18%,transparent);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#FFC8DB,#EC7FA9);border-radius:inherit;transition:width .4s}
+.shop{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;align-items:start}
+.cat{border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:color-mix(in srgb,var(--surface) 92%,transparent)}
+.cat-h{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:linear-gradient(180deg,var(--pink-soft),transparent)}
+.cat-h h3{font:400 24px/1 var(--f-display)}
+.cat-h span{font:500 12px var(--f-mono);color:var(--pink-ink)}
+.item{display:flex;align-items:center;gap:12px;padding:10px 16px;border-top:1px solid var(--line);cursor:pointer;font-size:14.5px}
+.item input{appearance:none;-webkit-appearance:none;width:22px;height:22px;border-radius:7px;border:2px solid color-mix(in srgb,var(--pink) 60%,var(--line));display:grid;place-items:center;margin:0;flex:none;cursor:pointer;background:var(--surface);transition:all .15s}
+.item input::after{content:"";width:6px;height:11px;border:solid var(--on-pink);border-width:0 2.5px 2.5px 0;transform:rotate(45deg) scale(0);margin-top:-2px;transition:transform .15s}
+.item input:checked{background:linear-gradient(180deg,#FFD3E2,#EC7FA9);border-color:#EC7FA9}
+.item input:checked::after{transform:rotate(45deg) scale(1)}
+.item.got span{text-decoration:line-through;color:var(--muted)}
+
+/* ================= TIPS / PORCIONES ================= */
+.recs{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.rec{padding:18px;border-radius:var(--r);border:1px solid var(--line);background:color-mix(in srgb,var(--surface) 92%,transparent);display:grid;gap:8px;align-content:start;transition:transform .2s,border-color .2s}
+.rec:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--pink) 55%,var(--line))}
+.rec h3{font:400 24px/1 var(--f-display);color:var(--pink-ink)}
+.rec p{font-size:14.5px;color:var(--muted)}
+.hands{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:18px}
+@media (max-width:900px){.hands{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:420px){.hands{grid-template-columns:1fr}}
+.hand{padding:16px;border-radius:var(--r);background:linear-gradient(170deg,var(--pink-soft),var(--surface));border:1px solid var(--line);display:grid;gap:6px;align-content:start}
+.hand h3{font:800 15px/1.2 var(--f-body)}
+.hand b{font:500 13px/1.35 var(--f-mono);color:var(--pink-ink)}
+.hand p{font-size:13px;color:var(--muted)}
+.ptabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.plist{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.prow{padding:14px 16px;border-radius:14px;background:color-mix(in srgb,var(--surface) 92%,transparent);border:1px solid var(--line);display:grid;gap:4px}
+.prow h4{font:800 15px/1.25 var(--f-body)}
+.prow b{font:500 13px/1.4 var(--f-mono);color:var(--pink-ink)}
+.prow p{font-size:13px;color:var(--muted)}
+
+/* ================= AFUERA ================= */
+.places{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;align-items:start}
+.place summary{display:grid;gap:4px;padding:18px 18px 14px}
+.place summary h3{font:400 26px/1.05 var(--f-display)}
+.place summary span{font:700 11px/1.3 var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.place .ask{margin:0 18px 16px;padding:12px 14px;border-radius:12px;background:var(--pink-soft);font-size:14px;color:var(--ink)}
+.place .ask b{display:block;font:700 10.5px/1 var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--pink-ink);margin-bottom:6px}
+.place ul{list-style:none;margin:0;padding:0 18px 18px;display:grid;gap:9px;font-size:14.5px;color:var(--muted)}
+.place li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px}
+.place li::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--pink);margin-top:8px}
+.place .more{margin:0 18px 16px;font:700 13px var(--f-body);color:var(--pink-ink)}
+.place[open] .more{display:none}
+
+/* ================= CONTACTO ================= */
+.contact{display:grid;grid-template-columns:minmax(0,1.3fr) auto;gap:20px;align-items:center;padding:28px;border-radius:28px;background:linear-gradient(140deg,var(--pink-soft),color-mix(in srgb,var(--lilac) 35%,var(--surface)));border:1px solid var(--line)}
+@media (max-width:760px){.contact{grid-template-columns:1fr}}
+.contact h2{font-size:clamp(32px,5vw,48px)}
+.contact .glass{border-radius:999px;padding:14px 22px;font-weight:800;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;gap:10px}
+.contact .glass svg{width:20px;height:20px}
+footer{margin-top:56px;border-top:1px solid var(--line)}
+footer .wrap{padding-block:26px 40px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-size:14px;color:var(--muted)}
+footer b{color:var(--ink)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:999px;font-weight:700;font-size:14px;pointer-events:none;transition:all .3s;z-index:40;max-width:calc(100% - 32px);text-align:center}
+.toast.is-on{opacity:1;transform:translate(-50%,0)}
+</style>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="laurel" viewBox="0 0 32 64">
+    <path d="M23 62C11 52 6 33 14 3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    <g fill="currentColor">
+      <ellipse cx="15" cy="56" rx="6.5" ry="2.6" transform="rotate(-38 15 56)"/><ellipse cx="23.5" cy="51" rx="6" ry="2.4" transform="rotate(-70 23.5 51)"/>
+      <ellipse cx="8.5" cy="46" rx="6.5" ry="2.6" transform="rotate(-25 8.5 46)"/><ellipse cx="17" cy="40" rx="6" ry="2.4" transform="rotate(-75 17 40)"/>
+      <ellipse cx="5.5" cy="35" rx="6.3" ry="2.5" transform="rotate(-12 5.5 35)"/><ellipse cx="15" cy="29" rx="5.8" ry="2.3" transform="rotate(-80 15 29)"/>
+      <ellipse cx="5.5" cy="24" rx="6" ry="2.4" transform="rotate(5 5.5 24)"/><ellipse cx="15.5" cy="18" rx="5.4" ry="2.2" transform="rotate(-85 15.5 18)"/>
+      <ellipse cx="8" cy="13" rx="5.4" ry="2.2" transform="rotate(22 8 13)"/><ellipse cx="14" cy="5" rx="4.6" ry="2" transform="rotate(-60 14 5)"/>
+    </g>
+  </symbol>
+  <symbol id="ic-check" viewBox="0 0 24 24"><path d="M5 12.5 10 17 19 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="ic-drop" viewBox="0 0 24 24"><path class="f" d="M12 3s6.5 7 6.5 11.5a6.5 6.5 0 0 1-13 0C5.5 10 12 3 12 3Z"/><path d="M12 3s6.5 7 6.5 11.5a6.5 6.5 0 0 1-13 0C5.5 10 12 3 12 3Z" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+</svg>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="brand"><b>MQ</b> Manu Queen · Plan nutricional deportivo</div>
+    <div class="hero-title">
+      <h1>Manuela <em>Giraldo</em></h1>
+      <p>Recomposición corporal · Entrenamiento de fuerza. Tres meses construyendo, no recortando.</p>
+    </div>
+
+    <section class="head" id="head" aria-label="Escaneo corporal 3D">
+      <div class="px" id="px" aria-hidden="true"></div>
+      <div class="hud">
+        <aside class="hud-panel hud-l" id="hudL" aria-label="Datos de Manuela"></aside>
+        <div class="stage" id="stage">
+          <div class="rx" id="rx" aria-hidden="true" style="--px:0;--py:0">
+            <div class="rx-halo"></div><div class="rx-dash"></div><div class="rx-track"></div><div class="rx-sweep"></div><div class="rx-outer"></div><div class="rx-inner"></div>
+            <div class="rx-orbit" style="--i:14%;--t:9s;--d:9px"></div>
+            <div class="rx-orbit inv" style="--i:14%;--t:13s;--d:5px;--dl:-4s"></div>
+            <div class="rx-orbit" style="--i:24%;--t:6s;--d:6px;--dl:-2s"></div>
+            <div class="rx-orbit inv" style="--i:34%;--t:5s;--d:7px"></div>
+            <div class="rx-orbit" style="--i:2%;--t:18s;--d:5px;--dl:-7s"></div>
+            <span class="rx-tw" style="top:6%;left:14%"></span><span class="rx-tw" style="top:18%;right:8%;--dl:.9s"></span>
+            <span class="rx-tw" style="bottom:12%;left:6%;--dl:1.6s"></span><span class="rx-tw" style="bottom:20%;right:16%;--dl:.4s"></span>
+            <span class="rx-tw" style="top:46%;left:-2%;--dl:2.1s"></span><span class="rx-tw" style="top:40%;right:-1%;--dl:2.7s"></span>
+          </div>
+          <canvas id="body3d" role="img" aria-label="Figura 3D con las zonas a trabajar resaltadas"></canvas>
+          <div class="tags" id="tags" aria-hidden="true"></div>
+          <div class="stage-hud"><span class="live">ESCANEO CORPORAL</span><span id="stageMode"><b>VALORACIÓN</b></span></div>
+          <span class="stage-hint">Arrastra para girar</span>
+          <p class="no3d-msg">No se pudo cargar el modelo 3D en este navegador. Tus medidas siguen a los lados.</p>
+        </div>
+        <aside class="hud-panel hud-r" id="hudR" aria-label="Composición corporal"></aside>
+      </div>
+      <div class="tl" id="tl" role="group" aria-label="Elegir medición"></div>
+      <div class="xp" id="xp"></div>
+      <div class="badge">
+        <svg class="laurel" aria-hidden="true"><use href="#laurel"></use></svg>
+        <p class="badge__text"><span class="badge__num" id="badgeNum">26 <em>días</em></span><span class="badge__label" id="badgeLabel">para tu primer control · 22 de noviembre</span></p>
+        <svg class="laurel laurel--right" aria-hidden="true"><use href="#laurel"></use></svg>
+      </div>
+      <p class="proj-note" id="projNote"></p>
+    </section>
+  </div>
+</header>
+
+<nav class="nav" aria-label="Secciones">
+  <div class="wrap" id="navWrap">
+    <a class="glass pill" href="#carta">Tu plan</a>
+    <a class="glass pill" href="#hoy">Hoy</a>
+    <a class="glass pill" href="#comidas">Comidas</a>
+    <a class="glass pill" href="#registro">Registro</a>
+    <a class="glass pill" href="#suplementos">Suplementos</a>
+    <a class="glass pill" href="#notas">Notas</a>
+    <a class="glass pill" href="#mercado">Mercado</a>
+    <a class="glass pill" href="#tips">Tips</a>
+    <a class="glass pill" href="#porciones">Porciones</a>
+    <a class="glass pill" href="#preguntas">Preguntas</a>
+    <a class="glass pill" href="#afuera">Comer afuera</a>
+  </div>
+</nav>
+
+<main>
+  <section id="carta" class="sec wrap">
+    <div class="letter">
+      <div class="letter-body" id="letter"></div>
+      <div style="display:grid;gap:14px">
+        <div class="card"><span class="eyebrow">Lo que tuve en cuenta</span><div class="chips" id="considera" style="margin-top:12px"></div></div>
+        <div class="card"><span class="eyebrow">Objetivos de estos tres meses</span><ul class="checks" id="objetivos" style="margin-top:14px"></ul></div>
+      </div>
+    </div>
+    <div style="margin-top:28px">
+      <div class="sec-head"><div><span class="eyebrow">Composición corporal · protocolo ISAK</span><h2>Lo que vamos a <em>mover</em></h2></div><p>Lo que medimos es la proporción entre músculo y grasa, no el peso.</p></div>
+      <div class="metrics" id="metrics"></div>
+    </div>
+  </section>
+
+  <section id="hoy" class="sec wrap">
+    <div class="sec-head"><div><span class="eyebrow">Seguimiento</span><h2>Tu <em>día</em></h2></div><p>Marca el agua y las comidas que vas haciendo. Todo vuelve a cero a medianoche.</p></div>
+    <div class="today">
+      <div class="card count">
+        <span class="eyebrow">Primer control</span>
+        <span class="big" id="cdNum">26</span>
+        <p><b id="cdTxt">días para el 22 de noviembre de 2026</b></p>
+        <p class="muted" style="font-size:14px">Ahí comparamos tu antropometría y ajustamos con lo que registres.</p>
+      </div>
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><span class="eyebrow">Hidratación de hoy</span><span class="num" id="wTxt">0 / 10 vasos</span></div>
+        <div class="drops" id="drops"></div>
+        <p class="muted" style="font-size:13.5px;margin-top:12px">Un termo en el escritorio y rellenarlo dos veces entre las 10 y las 5.</p>
+      </div>
+      <div class="card">
+        <div class="ring-row"><div class="ring" id="ring"><span id="ringTxt">0/6</span></div><div><span class="eyebrow" id="dayWeek">Semana en Cali</span><p style="font:400 26px/1.1 var(--f-display);margin-top:6px" id="dayTitle">Hoy</p></div></div>
+        <ul class="mini-list" id="dayList"></ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="comidas" class="sec wrap">
+    <div class="sec-head"><div><span class="eyebrow">Plan de alimentación</span><h2>Tus <em>comidas</em></h2></div><p>Todas las opciones de un mismo tiempo son equivalentes. Toca "La escogí hoy" y queda en tu registro con la fecha.</p></div>
+    <div class="weeks" id="weeks" role="tablist"></div>
+    <div class="week-info"><p id="weekDesc" style="font-size:15.5px"></p><div class="macros" id="macros"></div></div>
+    <div class="meal-tabs" id="mealTabs" role="tablist"></div>
+    <div id="mealPanel"></div>
+  </section>
+
+  <section id="registro" class="sec wrap">
+    <div class="sec-head"><div><span class="eyebrow">Para el control</span><h2>Tu <em>registro</em> diario</h2></div><p id="logIntro"></p></div>
+    <div class="log">
+      <div class="card"><span class="eyebrow">¿Cómo te fue hoy?</span><div id="rates" style="margin-top:6px"></div></div>
+      <div class="card">
+        <span class="eyebrow">Lo que has registrado</span>
+        <ul class="hist" id="hist" style="margin-top:12px"></ul>
+        <div class="actions">
+          <button class="glass is-on" id="copyLog" type="button">Copiar para enviárselo a Juan Sebastián</button>
+          <button class="glass danger" id="clearLog" type="button">Borrar registro</button>
+        </div>
+        <textarea id="copyArea" readonly style="position:absolute;left:-9999px;top:0" aria-hidden="true" tabindex="-1"></textarea>
+      </div>
+    </div>
+  </section>
+
+  <section id="suplementos" class="sec wrap">
+    <div class="sec-head"><div><span class="eyebrow">Suplementación</span><h2>Cuatro <em>aliados</em></h2></div><p>Te hacen más fácil llegar a la meta. No reemplazan comida.</p></div>
+    <div class="supps" id="supps"></div>
+  </section>
+
+  <section id="notas" class="sec wrap">
+    <div class="sec-head"><div><span class="eyebrow">Notas clínicas</span><h2>Por qué está <em>armado así</em></h2></div></div>
+    <div class="acc notes" id="notesAcc"></div>
+  </section>
+
+  <section id="mercado" class="sec wrap">
+    <div class="sec-head"><div><span class="eyebrow">Lista de mercado semanal</span><h2>Al <em>supermercado</em></h2></div><p>Marca lo que ya tienes en el carrito. La lista se queda guardada en este celular.</p></div>
+    <div class="shop-top">
+      <div><div style="display:flex;justify-content:space-between;margin-bottom:8px;font-weight:700"><span>Progreso</span><span class="num" id="shopTxt">0 / 0</span></div><div class="bar"><i id="shopBar"></i></div></div>
+      <button class="glass pill" id="shopReset" type="button">Empezar semana nueva</button>
+    </div>
+    <div class="shop" id="shop"></div>
+  </section>
+
+  <section id="tips" class="sec wrap">
+    <div class="sec-head"><div><span class="eyebrow">Recomendaciones generales</span><h2>Las reglas que <em>más rinden</em></h2></div></div>
+    <div class="recs" id="recs"></div>
+  </section>
+
+  <section id="porciones" class="sec wrap">
+    <div class="sec-head"><div><span class="eyebrow">Guía de porciones</span><h2>Tu mano es <em>la báscula</em></h2></div><p>La báscula que siempre llevas puesta. Las primeras dos semanas vale la pena medir; después tu mano hace el trabajo.</p></div>
+    <div class="hands" id="hands"></div>
+    <div class="ptabs" id="ptabs" role="tablist"></div>
+    <p class="muted" id="pnote" style="font-size:14px;margin-bottom:10px"></p>
+    <div class="plist" id="plist"></div>
+  </section>
+
+  <section id="preguntas" class="sec wrap">
+    <div class="sec-head"><div><span class="eyebrow">Preguntas frecuentes</span><h2>Lo que vas a <em>preguntarte</em></h2></div></div>
+    <div class="acc" id="faqAcc"></div>
+  </section>
+
+  <section id="afuera" class="sec wrap">
+    <div class="sec-head"><div><span class="eyebrow">Comer afuera · restaurantes</span><h2>Qué <em>pedir</em></h2></div></div>
+    <p id="afueraIntro" style="max-width:72ch;font-size:15.5px;margin-bottom:20px"></p>
+    <div class="places acc" id="places"></div>
+  </section>
+
+  <section class="sec wrap">
+    <div class="contact">
+      <div style="display:grid;gap:10px"><span class="eyebrow">¿Dudas sobre tu plan?</span><h2>Escríbeme <em>directo</em></h2><p class="muted">Mientras más concreto, mejor: qué tiempo de comida, qué opción y qué te pasó.</p></div>
+      <div style="display:grid;gap:10px;justify-items:start">
+        <a class="glass is-on" id="waBtn" href="https://wa.me/573175499759" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.8-1.4a.5.5 0 0 0 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3Z"/></svg>Escribir por WhatsApp</a>
+        <button class="glass pill" id="copyTel" type="button">317 549 9759 · copiar</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Elaborado por <b>Juan Sebastián Muñoz Ortiz</b> · JSMO Nutricionista deportivo · @juansenutricionista</span>
+    <span>Plan de Manuela Giraldo · Primer control 22 nov 2026</span>
+  </div>
+</footer>
+<div class="toast" id="toast" role="status"></div>
+<script>
+/* ================= CONTENIDO DEL PLAN (Juan Sebastián Muñoz O. · JSMO) ================= */
+window.MANU={
+  control:'2026-11-22',
+  intro:[
+    'Soy Juan Sebastián Muñoz O., tu nutricionista deportivo. Antes de hablar de comida quiero contarte lo que encontré en tu valoración, porque define los tres meses que vienen.',
+    'Tu peso está perfecto: 60,7 kg para 171,6 cm, con un IMC de 20,6. La báscula no es tu tema y no va a ser la métrica de este proceso. Lo que sí vamos a mover es tu sumatoria de pliegues, que hoy está en 91 milímetros, y la vamos a mover de una forma muy específica: bajándola sin que pierdas ni un gramo del músculo que ya tienes.',
+    'Déjame explicarte por qué el plan está armado como está. Un plan que solo recorta comida termina gastando músculo, y eso se nota donde más te importa: en la cara, en la piel, en el brillo del pelo y en la energía con la que llegas a trabajar. Por eso este lleva la proteína alta, el entrenamiento de fuerza como pieza central, y las calorías que necesitas. La idea es que llegues a verte delgada y con buena cara, que es lo que tu trabajo pide, no delgada y apagada.',
+    'Dos cosas más que vas a notar apenas lo abras. La primera: hay seis comidas al día, y una de ellas cae justo en la mitad de la mañana, que es el hueco que hoy tienes entre el desayuno y la una de la tarde. La segunda: hay algo dulce todos los días, a propósito y medido, porque un antojo resuelto no desordena nada.',
+    'Y como viajas una semana de cada cuatro, ese mes tiene su propia pestaña, con qué pedir en un buffet, en un aeropuerto y en un restaurante.'
+  ],
+  firma:'Tres meses. Construyendo, no recortando.',
+  considera:['Preparaciones suaves, sin fritos ni condimentos fuertes','Sin cerdo ni pescado blanco','Sin huevos pericos, apio, remolacha ni guayaba','Sin alergias alimentarias'],
+  objetivos:[
+    'Bajar la sumatoria de 6 pliegues desde los 91 mm, sosteniendo la masa muscular que ya tienes.',
+    'Cerrar el hueco de las 8 de la mañana a la una de la tarde, que hoy pasas sin comer.',
+    'Resolver el estreñimiento con fibra en los seis tiempos, agua y probióticos.',
+    'Que la semana de viaje deje de ser la semana que se cae.'
+  ],
+  metricas:[
+    {k:'Sumatoria de 6 pliegues (ISAK)',v:'91,0',u:'mm',meta:'Bajar a 78 mm en los 3 meses. Es tu métrica principal',main:true},
+    {k:'Sumatoria de 8 pliegues',v:'117,0',u:'mm',meta:'En descenso progresivo'},
+    {k:'Índice adiposo-muscular',v:'0,93',u:'',meta:'Bajar a 0,80. Mide músculo contra grasa, no peso'},
+    {k:'Masa libre de grasa',v:'43,27',u:'kg',meta:'Mantener o subir, nunca bajar'},
+    {k:'Perímetro de cintura',v:'70,8',u:'cm',meta:'Mantener. Ya está por debajo del promedio'},
+    {k:'Índice cintura-cadera',v:'0,72',u:'',meta:'Menor a 0,85. Ya en bajo riesgo'},
+    {k:'Peso corporal',v:'60,7',u:'kg',meta:'Sin meta de peso. Tu peso ya está donde debe estar'}
+  ],
+  semanas:{
+    cali:{
+      nombre:'Semana en Cali',sub:'Tres semanas de cada cuatro',
+      desc:'Seis tiempos, con una media mañana que cierra el hueco de las 8 a la 1 y un postre todos los días en la media tarde. La proteína alta es la pieza que sostiene el músculo mientras bajan los pliegues.',
+      macros:[['~1.700','kcal','Energía total'],['~175','g','Carbohidratos · 2,9 g/kg'],['~136','g','Proteína · 2,2 g/kg'],['~56','g','Grasas · 0,9 g/kg']],
+      tag:'Recomposición · preparaciones suaves',
+      comidas:[
+        {id:'pre',n:'Pre-entreno',h:'4:45 am',sub:'Antes del gimnasio',chip:'Suave',
+         nota:'Me contaste que empezaste a comer algo antes de entrenar y que te cayó bien. Se queda, y suave como está: a esa hora el estómago no quiere nada pesado ni ácido.',
+         ops:[
+          ['Media','Tu yogurt griego con avena y banano','½ taza de yogurt griego Alimentos YEN Escobar · 3 cdas de avena en hojuelas · ½ banano en rodajas'],
+          ['Liviana','Tostadas de arroz con cottage y miel','2 galletas de arroz · 2 cdas de queso cottage · 1 cdita de miel'],
+          ['Completa','Batido de proteína con mango o arándanos','1 scoop de proteína · 1 taza de mango picado, o 15 arándanos · ½ vaso de leche de almendras'],
+          ['Completa','Pudín de chía con papaya','1 cda de chía remojada en leche de almendras · ½ taza de yogurt griego Alimentos YEN Escobar · 1 taza de papaya picada']
+         ]},
+        {id:'des',n:'Desayuno',h:'8:00 am',sub:'Post-entreno',chip:'Post-entreno',
+         nota:'Me dijiste que te cuesta comer lo mismo todos los días, así que acá hay cinco y ninguna se parece a la otra. Tu porción de huevo en este tiempo son 2 enteros y 1 clara.',
+         ops:[
+          ['Media','Huevos revueltos con champiñones y arepa crunchy','2 huevos enteros y 1 clara revueltos con 1 puñado de champiñones · 1 arepa crunchy de Sary con 2 cdas de queso cuajada triturado encima · ½ taza de papaya picada'],
+          ['Media','Huevos revueltos con cherry salteados y arroz','2 huevos enteros y 1 clara revueltos · 6 tomates cherry salteados con aceite de oliva, ajo y orégano · 2 cdas de maicitos · 4 cdas de arroz · 1 taza de piña picada'],
+          ['Completa','Omelette de zanahoria relleno de mozzarella y kale','Omelette de 2 huevos enteros y 1 clara con zanahoria rallada en la mezcla, relleno de 1 tajada de queso mozzarella Finesse y kale · 1 tajada de pan de masa madre del Molino Francés de Campo con 2 cdas de queso cottage y 1 chorrito de miel · 5 fresas picadas'],
+          ['Liviana','Pancakes de avena con proteína y arándanos','2 pancakes de 5 cdas de avena con 1 huevo · 1 scoop de proteína · 2 cdas de yogurt griego Alimentos YEN Escobar · 15 arándanos'],
+          ['Media','Huevos napolitanos con nachos de arepa','2 huevos enteros y 1 clara en cacerola con 2 cdas de salsa napolitana sin azúcar casera · 1 tajada de queso mozzarella Finesse · ½ arepa de maíz tipo tela en triángulos al airfryer · 4 cdas de mango picado']
+         ]},
+        {id:'am',n:'Media mañana',h:'10:30 am',sub:'En la oficina',chip:'El hueco',
+         nota:'Esta es la comida más importante del plan. Hoy pasas de las 8 de la mañana a la una de la tarde sin comer nada, y eso es justo lo que no le conviene a tu estómago. Las cuatro se llevan en el bolso y ninguna necesita nevera ni preparación.',
+         ops:[
+          ['Completa','Batido de proteína con mango y chía','1 scoop de proteína · 1 taza de mango picado · 1 cda de chía · agua'],
+          ['Media','Tu yogurt griego con frutos rojos','¾ taza de yogurt griego Alimentos YEN Escobar · ½ taza de frutos rojos · 1 tostada de arroz triturada dentro del yogurt · ½ scoop de proteína'],
+          ['Liviana','Palito de queso con kiwi','1 palito de queso bajo en grasa de Vital Latti o Alpina · 1 kiwi, o 4 cdas de mango picado'],
+          ['Media','Yogurt bebible con rosquillas caleñas','1 vaso de yogurt Finesse bebible · 1 paquete de rosquillas caleñas']
+         ]},
+        {id:'alm',n:'Almuerzo',h:'1:00 pm',sub:'Mediodía',chip:'',
+         nota:'Cinco opciones, y tres de ellas se piden igual en un restaurante. El arroz y la pasta están acá a propósito: me dijiste que los amas y tu cuerpo los necesita para entrenar como entrenas.',
+         ops:[
+          ['Media','Carne de res con lentejas, arroz y ensalada','160 g de carne de res a la plancha · 3 cdas de lentejas guisadas · 4 cdas de arroz · 1 taza de ensalada de lechuga romana, tomate y cebolla con limón y sal · ¼ de aguacate'],
+          ['Media','Tu bowl tipo Chilitaco con fajitas de res','160 g de carne de res en tiras tipo fajitas salteada con pimentón y cebolla en julianas · ½ maduro picado en cubitos al airfryer · 1 cda de guacamole casero · 2 cdas de pico de gallo con 2 cdas de mango picado · lechuga romana picada'],
+          ['Media','Batata rellena de carne molida','1 batata al horno rellena con 160 g de carne molida magra · 2 cdas de queso cottage · 3 cdas de pico de gallo'],
+          ['Completa','Pasta con pollo en salsa de yogurt griego y cilantro','170 g de pollo desmechado · salsa de yogurt griego Alimentos YEN Escobar y cilantro licuados con limón y sal · 7 cdas de pasta corta tipo penne o tornillo · 1 cda de queso parmesano · 1 taza de brócoli al vapor con 6 tomates cherry'],
+          ['Liviana','Salmón al ajillo con papa amarilla y kale','160 g de salmón al ajillo · 3 papas amarillas con paprika al airfryer · 1 puñado de kale con tomate y cebolla']
+         ]},
+        {id:'pm',n:'Media tarde',h:'4:30 pm',sub:'Tu postre',chip:'Tu postre',
+         nota:'Me dijiste que a esta hora comes seis bolitas de granola porque no sabes qué comer. Acá tienes cuatro respuestas y todas llevan algo dulce. Es a propósito: un antojo resuelto a las cuatro y media no desordena nada.',
+         ops:[
+          ['Completa','Tu postre de yogurt griego con frutos rojos','3 cdas de yogurt griego Alimentos YEN Escobar · ½ taza de frutos rojos · 2 cdas de granola tostada de chocolate'],
+          ['Completa','Crispetas con batido de proteína y banano','1 plato sopero de crispetas de maíz con sal · 1 scoop de proteína en agua con ½ banano'],
+          ['Liviana','Manzana verde con limón y sal','1 manzana verde · limón y sal al gusto'],
+          ['Liviana','Gelatina con yogurt griego y fresas','1 plato sopero de gelatina sin azúcar · 3 cdas de yogurt griego Alimentos YEN Escobar revueltos con ½ scoop de proteína · 4 fresas picadas']
+         ]},
+        {id:'cena',n:'Cena',h:'7:30 pm',sub:'Suave',chip:'Suave',
+         nota:'Seis opciones y todas con su porción exacta. Comes con tu familia y te acuestas temprano, así que ninguna pasa de unos pocos minutos.',
+         ops:[
+          ['Media','Tus huevos tipo samba con maduro','2 huevos enteros y 2 claras · ½ maduro picado en cubitos al airfryer · 1 tajada de queso mozzarella Finesse para gratinar'],
+          ['Liviana','Arepa de arroz con pollo desmechado','1 arepa de arroz integral de Alimentos YEN · 150 g de pollo desmechado guisado encima · 2 cdas de pico de gallo'],
+          ['Media','Tu arepa con carne y ensalada','1 arepa de maíz tipo tela asada · 150 g de carne molida magra en hamburguesa a la plancha · 1 tajada de queso mozzarella Finesse · 1 taza de ensalada de lechuga y tomate'],
+          ['Media','Crema de auyama con pollo desmechado','1 plato sopero de crema de auyama, o de tomate · 150 g de pollo desmechado guisado · ¼ de aguacate picado · 1 cdita de maicitos'],
+          ['Completa','Bowl de camarones con quinoa y espárragos','150 g de camarones salteados al ajillo · 6 cdas de quinoa cocida · 1 taza de espárragos salteados · ¼ de aguacate'],
+          ['Media','Tu wrap de atún','1 lata de atún en agua con 2 claras picadas, tomate, cebolla, limón y sal · 1 tortilla integral talla M']
+         ]}
+      ]
+    },
+    viaje:{
+      nombre:'Semana de viaje',sub:'Una semana de cada cuatro',
+      desc:'La misma energía y las mismas porciones que tu semana en Cali. Lo que cambia es dónde estás, no cuánto comes. Cinco tiempos pensados para buffet de hotel, aeropuerto y restaurante.',
+      macros:[['~1.700','kcal','Energía total'],['~160','g','Carbohidratos · 2,6 g/kg'],['~142','g','Proteína · 2,3 g/kg'],['~54','g','Grasas · 0,9 g/kg']],
+      tag:'Misma meta · otra logística',
+      comidas:[
+        {id:'vdes',n:'Desayuno',h:'Al bajar al buffet',sub:'Hotel',chip:'Hotel',
+         nota:'El buffet de hotel es el mejor momento del día cuando viajas: hay huevos al momento, fruta y avena en casi todos. Arma el plato antes de dar la primera vuelta. Eso solo ya te resuelve la mañana.',
+         ops:[
+          ['Media','Buffet: huevos al momento con tostadas','2 huevos enteros y 1 clara revueltos (pedidos al momento) · 2 tostadas de pan integral · 1 taza de papaya picada · 1 cdita de mantequilla'],
+          ['Media','Buffet: avena con yogurt griego y fruta','1 taza de avena cocida · ¾ taza de yogurt griego Alimentos YEN Escobar · ½ taza de frutos rojos · 1 cda de semillas de chía · 1 scoop de proteína'],
+          ['Media','Buffet: omelette de verduras con queso','Omelette de 2 huevos enteros y 1 clara con tomate · 1 tajada de queso mozzarella Finesse · 1 arepa de maíz tipo tela asada · 1 cdita de mantequilla · 1 taza de piña picada'],
+          ['Liviana','Sin buffet: batido y fruta del aeropuerto','1 scoop de proteína en agua · 1 banano · 6 almendras · 2 galletas de arroz']
+         ]},
+        {id:'vam',n:'Media mañana',h:'A media mañana',sub:'Donde estés',chip:'De la maleta',
+         nota:'Esta es la que hay que empacar antes de salir de la casa. Un scoop de proteína en una bolsita y unas almendras ocupan nada en la maleta y te salvan la mañana en cualquier aeropuerto.',
+         ops:[
+          ['Media','De la maleta: proteína con almendras','1 scoop de proteína en agua · 6 almendras · 2 galletas de arroz'],
+          ['Media','Yogurt griego con fruta de tienda','¾ taza de yogurt griego Alimentos YEN Escobar · 1 taza de papaya picada · ½ scoop de proteína revuelto'],
+          ['Liviana','Barra de proteína con banano','1 barra de proteína · 1 banano'],
+          ['Completa','Galletas de arroz con queso','2 galletas de arroz · 2 tajadas de queso mozzarella Finesse · ½ scoop de proteína en agua']
+         ]},
+        {id:'valm',n:'Almuerzo',h:'Del mediodía a la una',sub:'Restaurante',chip:'Restaurante',
+         nota:'En un menú siempre hay una proteína a la plancha y siempre hay arroz. Pide la salsa aparte y una ensalada para la mesa antes del plato fuerte. Ese solo cambio te resuelve casi todo.',
+         ops:[
+          ['Media','Restaurante: proteína a la plancha con arroz','160 g de carne de res, pollo o salmón a la plancha · 5 cdas colmadas de arroz · 1 taza de ensalada de lechuga, tomate y cebolla con limón y sal · ¼ de aguacate'],
+          ['Media','Restaurante: pasta con pollo en salsa de tomate','160 g de pollo en cubos salteado · 9 cdas de pasta corta en salsa de tomate · 1 taza de ensalada de lechuga romana y tomate'],
+          ['Media','Restaurante: bowl armado','160 g de carne de res en tiras a la parrilla · ½ taza de fríjoles · 4 cdas de maíz tierno · lechuga romana picada · 2 cdas de pico de gallo · 1 cda de guacamole casero'],
+          ['Media','Restaurante de mar: camarones a la plancha','160 g de camarones salteados al ajillo · 3 papas amarillas al airfryer · 1 taza de ensalada de lechuga, tomate y pimentón · ¼ de aguacate']
+         ]},
+        {id:'vpm',n:'Media tarde',h:'A media tarde',sub:'Tu postre',chip:'Tu postre',
+         nota:'Viajando esta comida importa más, no menos: es la que evita que llegues a una cena de trabajo con hambre de tres horas. Todas caben en un bolso.',
+         ops:[
+          ['Media','Chocolate al 70% con almendras','2 cuadritos de chocolate al 70% · 6 almendras · 1 scoop de proteína en agua'],
+          ['Media','Yogurt griego con frutos rojos','¾ taza de yogurt griego Alimentos YEN Escobar · ½ taza de frutos rojos · ½ scoop de proteína revuelto'],
+          ['Media','Crispetas con batido de proteína y chocolate','1 plato sopero de crispetas de maíz con sal · 1 scoop de proteína en agua · 2 cuadritos de chocolate al 70%'],
+          ['Completa','Fruta de tienda con proteína','1 taza de mango picado · 1 scoop de proteína en agua · 6 almendras']
+         ]},
+        {id:'vcena',n:'Cena',h:'En la noche',sub:'Restaurante',chip:'Restaurante',
+         nota:'Las cenas de viaje suelen ser de trabajo y suelen ser tarde. La regla es simple: una proteína a la plancha o al horno, verduras sin límite, y el almidón del tamaño de tu puño.',
+         ops:[
+          ['Media','Restaurante: proteína con verduras','160 g de pollo, carne de res o salmón a la plancha · 4 cdas de arroz · 1 taza de verduras salteadas o al vapor · 1 taza de ensalada de lechuga y tomate'],
+          ['Media','Sopa clara con pollo','1 plato sopero de sopa de verduras · 150 g de pollo desmechado · 4 cdas de quinoa cocida · 1 taza de ensalada de lechuga romana'],
+          ['Media','Ensalada grande con camarones','150 g de camarones salteados · 1 taza de ensalada de lechuga romana, tomate y pimentón · ¼ de aguacate · 2 galletas de arroz'],
+          ['Media','Room service: huevos con tostadas','2 huevos enteros y 1 clara revueltos · 1 tostada de pan integral · 1 tajada de queso mozzarella Finesse · 1 taza de ensalada de lechuga y tomate']
+         ]}
+      ]
+    }
+  },
+  registro:{
+    intro:'Dos cosas, y las dos toman segundos. Cada vez que toques la opción que escogiste en un tiempo de comida, queda guardada acá con la fecha. Y abajo marcas cómo te fue el día. En el control lo revisamos juntos: así el ajuste se hace con lo que de verdad pasó, no con lo que alcancemos a recordar.',
+    escalas:[
+      {k:'energia',n:'Energía',ops:['En el piso','Bajita','Normal','Bien','Con pila de sobra']},
+      {k:'hambre',n:'Hambre',ops:['Sin hambre','Poca','Normal','Bastante','Con mucha hambre']},
+      {k:'bano',n:'Baño',ops:['No fui','Me costó','Normal']},
+      {k:'sueno',n:'Sueño',ops:['Dormí mal','Regular','Bien','Muy bien']}
+    ]
+  },
+  suplementos:[
+    {n:'Probióticos',d:'1 cápsula diaria, en ayunas, por 3 meses seguidos',t:'Este es el más importante de los cuatro para ti. Nunca los has tomado, me dijiste que pueden pasar más de dos días sin que vayas al baño, y hay antecedente familiar de colon en tu mamá y tus hermanas. Tres meses seguidos, sin saltártelos: con los probióticos el efecto se construye, no es de un día para otro.',main:true},
+    {n:'Proteína en polvo',d:'1 a 2 scoops al día, repartidos entre el pre-entreno, la media mañana y la media tarde',t:'Con la meta en 140 g diarios, una jornada de oficina de 10 a 5 y una semana al mes viajando, es lo que te permite llegar sin tener que cargar comida a todas partes. Es también el suplemento que más directamente sostiene el músculo mientras bajan los pliegues.'},
+    {n:'Glicinato de magnesio',d:'2 tabletas, 2 horas antes de dormir (Farmacia Biológica)',t:'Estás moviendo tu hora de dormir de la 1 de la mañana a las 11 de la noche, que es un cambio grande. El magnesio ayuda a que ese cambio se asiente, y de paso acompaña el trabajo sobre el tránsito intestinal. El sueño no es un extra del plan: es cuando se repara el músculo que trabajaste en la mañana.'},
+    {n:'Ashwagandha',d:'1 tableta los días de mucho estrés',t:'No es para todos los días: es para los días que tú ya sabes cuáles son. Me dijiste que el trabajo te genera mucho estrés y que eres una persona bastante ansiosa, y el estrés sostenido juega en contra tanto del estómago como de la composición corporal.'}
+  ],
+  notas:[
+    ['Por qué no hay meta de peso','Tu peso está donde debe estar: 60,7 kg para 171,6 cm, IMC 20,6. Lo que vamos a mover es la proporción entre tu músculo y tu grasa, que se mide con un número llamado índice adiposo-muscular y hoy está en 0,93. Ese número es el que de verdad se ve en una foto. Puede pasar perfectamente que en tres meses peses lo mismo y te veas completamente distinta. De hecho es lo más probable, y es exactamente lo que buscamos. No midas este proceso con la báscula; mídelo con el espejo, con la ropa y con las cargas del gimnasio.'],
+    ['La media mañana no es opcional','Hoy desayunas a las 8 y no vuelves a comer hasta la una. Cinco horas. Esa comida de las 10:30 es la pieza que más va a cambiar cómo te sientes, y por dos razones distintas: tu estómago lleva año y medio pidiendo que no lo dejes vacío tanto tiempo, y llegar al almuerzo con cinco horas de hambre es lo que hace que el resto del día se desordene. Las cuatro opciones se llevan en el bolso, sin nevera y sin preparación, justo porque sé que a esa hora estás en la oficina.'],
+    ['Tu dulce, todos los días','Me dijiste que todos los días en algún punto piensas en dulce. Entonces el dulce está en el plan, todos los días, en la media tarde: un helado casero de banano y cacao, un yogurt con granola y frutos rojos, chocolate al 70% con fresas, o crispetas si ese día el antojo es de sal. No hay que ganárselo ni compensarlo después. La idea es simple: un antojo resuelto a las cuatro y media, con su porción, es un antojo que no se convierte en otra cosa a las once de la noche.'],
+    ['El agua y el tránsito','Acá tenemos una oportunidad grande y muy fácil de aprovechar. Me contaste que tomas un termo de agua en el entreno antes de las 8 am, y que de ahí en adelante no vuelves. Subir eso es, probablemente, la mitad de la solución para que no te pasen dos días sin ir al baño. La meta son diez vasos al día. Lo práctico: deja un termo lleno en tu escritorio de la oficina y vuélvelo rutina rellenarlo dos veces entre las 10 y las 5. La otra mitad la ponen la chía, la papaya, la piña, la avena, las lentejas, los fríjoles y el kale, que están repartidos a propósito en todos los tiempos.'],
+    ['Preparaciones suaves, siempre','Vas a notar que en todo el plan no hay nada frito, nada apanado y nada muy condimentado. Todo va a la plancha, al horno, al vapor, al airfryer o salteado suave. No es casualidad y no es por calorías: es la forma de comer que le conviene a tu estómago, y en tu caso importa más que cualquier otra cosa del plan. Las porciones pequeñas y repartidas en seis tiempos van en la misma dirección.'],
+    ['Dos exámenes de control','Te quiero pedir el favor de que agendes una valoración con gastroenterología y que les pidas específicamente la prueba de Helicobacter pylori. Es un examen sencillo y de rutina, y vale mucho la pena tenerlo. Si le puedes comentar a tu médico hace cuánto vienes con molestias, mejor todavía. Y si me los puedes traer al control del mes, los revisamos juntos.'],
+    ['Tu pasta con salsa blanca está en el plan','Me dijiste que es lo que más te gusta, y está en el almuerzo. La única diferencia es que la salsa va con leche de almendras y queso parmesano en lugar de crema de leche. Queda igual de cremosa, te cae mejor y sabe prácticamente igual. Y el arroz está en el desayuno, en el almuerzo y en el bowl: me dijiste que lo amas y no hay ninguna razón para quitártelo.'],
+    ['La semana que viajas','Tienes dos pestañas en el plan. La segunda es para la semana de cada mes que estás por fuera, y tiene algo que quiero que notes: es la misma cantidad de comida y la misma proteína que tu semana en Cali. Cuando uno viaja no necesita comer menos, necesita saber qué pedir. Por eso las opciones están armadas por lugar: buffet de hotel, aeropuerto, restaurante, room service. Y lo único que hay que empacar antes de salir de la casa son unos sobres de proteína y unas almendras.'],
+    ['Los fines de semana','Sales a comer sábado y domingo, y los asados con tus amigos son parte de tu vida. Un asado es de las mejores comidas que puedes hacer fuera: proteína a la parrilla, ensalada y una porción de almidón. Pide la ensalada primero, antes de que llegue la carne, y sirve el almidón una sola vez. Con eso el fin de semana no mueve nada, y lo digo con números: dos comidas fuera en siete días no cambian un proceso de tres meses.'],
+    ['El día que no entrenes','Los días sin gimnasio el pre-entreno se reemplaza por un vaso de agua y ya, y el carbohidrato del almuerzo baja a la mitad: la mitad del arroz, de la pasta o de las papas. La proteína NO se baja nunca, ni un día. Es lo que sostiene el músculo, y el músculo es todo el punto de estos tres meses.']
+  ],
+  mercado:[
+    ['Proteínas',['Huevos','Pechuga/pollo','Carne de res magra','Salmón','Atún en agua','Proteína en polvo','Lentejas','Gelatina sin azúcar','Fríjoles','Carne de res','Carne molida magra','Pollo','Camarones','Almendras (8 a 10 por porción)']],
+    ['Lácteos',['Queso cuajada','Queso mozzarella','Yogurt griego','Queso parmesano','Leche de almendras']],
+    ['Carbohidratos',['Pan de masa madre (Molino)','Arroz','Papa','Pasta','Quinoa','Arepa de maíz tipo tela','Pasta corta','Pan integral','Galletas de arroz','Avena en hojuelas','Granola Alimentos YEN','Papa amarilla / criolla','Maíz tierno','Crispetas de maíz']],
+    ['Frutas y verduras',['Banano','Aguacate','Mix de ensalada / lechuga','Tomate','Champiñones','Fresas','Zanahoria','Kale','Lechuga romana','Brócoli','Espárragos','Pimentón','Papaya','Piña','Mango','Frutos rojos']],
+    ['Otros',['Miel','Almendras','Semillas de chía','Chocolate al 70%','Pico de gallo','Guacamole casero']]
+  ],
+  recs:[
+    ['Cocción','Todas las preparaciones van asadas, cocidas, a la plancha o al airfryer. Frito solo en ocasiones contadas, y en el airfryer, que para efectos prácticos es lo mismo sin el aceite.'],
+    ['Horarios','Mantén horarios regulares e intenta no pasar más de 3 horas sin comer. Esta es la regla que más rinde de toda la lista: los espacios largos son lo que dispara el hambre de las cinco de la tarde.'],
+    ['Proteína siempre','Incluye una fuente de proteína en cada comida, incluidas las pequeñas. Lo dulce solo sube y baja; lo dulce con proteína al lado sostiene.'],
+    ['Sin empaquetados','No vamos a consumir productos empaquetados ni altos en azúcar, y tampoco bebidas con azúcar añadida. Las opciones dulces de tu plan están puestas justo para que no te haga falta.'],
+    ['Color en el plato','Más frutas y verduras cada día, y que el plato tenga color. Las verduras de hoja van libres: ahí nunca te vas a pasar.'],
+    ['Carbohidratos de calidad','Prioriza granos enteros (avena, quinoa, arroz integral), legumbres, tubérculos y verduras. Las harinas refinadas y los azúcares añadidos son lo que de verdad cuidamos, no el carbohidrato en sí.'],
+    ['Menos sodio','Reduce la sal y los ultraprocesados, y gana sabor con ajo, cebolla sofrita, cilantro, comino, orégano, cúrcuma, laurel, limón y pimienta. El salero fuera de la mesa.'],
+    ['Ensaladas','Solo limón y sal, o una vinagreta casera. Las vinagretas y aderezos industriales le pueden sumar 150 calorías invisibles a un plato que creías ligero.'],
+    ['Comida de casa','Vamos a reducir la comida de la calle. La comida de tu casa siempre es la mejor opción, y cuando toque comer afuera, mira la sección de restaurantes.'],
+    ['Porciones','Respeta las porciones y familiarízate con ellas. Las primeras dos semanas vale la pena medir; después tu mano hace el trabajo.'],
+    ['Hidratación','Hidrátate bien durante todo el día. Mantén un termo con agua contigo durante tu jornada: es el hábito más fácil de cumplir y el que más se olvida.'],
+    ['Descanso','Procura dormir más de 7 horas. Dormir poco sube el hambre del día siguiente y baja la recuperación. El descanso hace parte del plan igual que la comida.'],
+    ['Antojos','Los antojos los manejamos con opciones dulces sin azúcar y con fruta, no aguantándolos. Un antojo bien resuelto no desordena nada; un antojo aguantado tres días sí.'],
+    ['Señales del cuerpo','Come con calma, mastica bien y reconoce cuando ya estás satisfecha. Buena parte de lo que uno come de más es por ansiedad o por aburrimiento, no por hambre.'],
+    ['Disfrutar','Vamos a disfrutar de la alimentación, sin extremos. Ser feliz también hace parte de este plan de alimentación.'],
+    ['Constancia','No se trata de hacerlo perfecto, sino de ser constante. Si un día no sale como esperabas, retomas al día siguiente sin castigarte y sin compensar. Ese es el único hábito que de verdad decide el resultado.']
+  ],
+  manos:[
+    ['Palma de tu mano (sin dedos)','≈ 100–120 g de proteína cocida','Del grosor de tu palma también. Si la carne queda más gruesa, es más porción.'],
+    ['Tu puño cerrado','≈ 1 taza · 1 porción de verdura cocida o de fruta picada','Las verduras de hoja van libres: ahí el puño no manda.'],
+    ['Tu mano en forma de copa','≈ ½ taza de arroz, pasta o granos cocidos','Es la medida del almidón en el almuerzo y la cena.'],
+    ['Tu pulgar completo','≈ 1 cucharada de grasa (aceite, mantequilla de maní, queso crema)','La punta del pulgar (primera falange) ≈ 1 cucharadita.'],
+    ['Tu puño y medio','≈ el plato de verduras que buscamos en almuerzo y cena','Mitad del plato en verduras: esa es la regla que más rinde.']
+  ],
+  porciones:[
+    ['Proteínas','',[
+      ['Pechuga de pollo','1 pechuga mediana ≈ 150 g crudo · 1 filete delgado ≈ 100 g','Un muslo sin piel ≈ 80 g. Dos muslos ≈ 1 pechuga mediana.'],
+      ['Carne de res o cerdo','1 bistec del tamaño de tu palma ≈ 120 g crudo','La carne molida: ½ taza compacta ≈ 110 g cruda.'],
+      ['Pescado','1 filete del tamaño de tu mano abierta ≈ 150 g crudo','1 lata de atún al agua escurrida ≈ 120 g ≈ 25 g de proteína.'],
+      ['Huevo','1 huevo entero ≈ 6 g de proteína','2 claras ≈ 1 huevo entero en proteína, sin la grasa de la yema.'],
+      ['Queso campesino / cuajada','1 tajada gruesa ≈ 30 g · 1 cubo de 3 cm ≈ 30 g','Queso costeño o doble crema rinden más grasa: media tajada.'],
+      ['Yogur griego / kumis','1 vasito comercial ≈ 150 g · 1 taza ≈ 200 g','']]],
+    ['Carbohidratos','',[
+      ['Arroz, pasta, quinoa (cocidos)','½ taza ≈ 1 mano en copa ≈ 100 g · 1 cucharón raso ≈ ½ taza','Crudo pesa la tercera parte: 35 g de arroz crudo ≈ ½ taza cocida.'],
+      ['Fríjoles, lentejas, garbanzos (cocidos)','½ cucharón ≈ ½ taza ≈ 110 g','Si van con arroz, baja el arroz a la mitad: los dos son almidón.'],
+      ['Papa y yuca','1 papa del tamaño de un huevo grande ≈ 100 g · 2 papas criollas ≈ 80 g','Un trozo de yuca del largo de tu dedo índice ≈ 80 g.'],
+      ['Plátano','½ maduro asado ≈ 80 g · 1 patacón del tamaño de la palma ≈ 60 g',''],
+      ['Arepa y pan','1 arepa delgada de 12 cm ≈ 60 g · 1 tajada de pan integral ≈ 30 g','La arepa de la plaza (gruesa, de 15 cm) son casi dos porciones.'],
+      ['Avena en hojuelas','4 cucharadas colmadas ≈ 30 g · ½ taza ≈ 40 g','']]],
+    ['Grasas','Acá la medida es pequeña y sí importa',[
+      ['Aguacate','1 tajada del ancho de dos dedos ≈ 50 g · ⅛ de aguacate grande','Medida casera: lo que cabe en una cucharada sopera colmada.'],
+      ['Crema de maní o de almendras','1 cucharadita de postre rasa ≈ 8 g','Es la cucharita pequeña del juego de cubiertos, no la sopera.'],
+      ['Aceite de oliva o de aguacate','1 cucharadita ≈ 5 ml · 1 chorrito de sartén ≈ 1 cucharadita','Para saltear alcanza con 1 cucharadita y la sartén bien caliente.'],
+      ['Frutos secos','1 puñado cerrado ≈ 20 g · 7 unidades de maní · 10 almendras · 6 nueces',''],
+      ['Semillas (chía, linaza, ajonjolí)','1 cucharada ≈ 10 g','']]],
+    ['Verduras y frutas','',[
+      ['Verduras de hoja (lechuga, espinaca, rúgula)','Libres · 2 tazas ≈ 1 porción','Nunca te van a sobrar. Entre más color tenga el plato, mejor.'],
+      ['Verduras cocidas o en ensalada','1 taza ≈ 1 puño ≈ 120 g',''],
+      ['Fruta entera','1 unidad del tamaño de tu puño ≈ 1 porción','Banano mediano, 1 manzana, 1 pera, 2 mandarinas, 10 uvas.'],
+      ['Fruta picada','1 taza ≈ 1 puño ≈ 150 g',''],
+      ['Frutos rojos','1 taza ≈ 150 g · 8 fresas medianas','']]],
+    ['Medidas de cocina','Las medidas de la cocina, traducidas',[
+      ['Cucharada sopera (rasa)','≈ 15 ml · 15 g de líquido · 10 g de harina',''],
+      ['Cucharadita de postre (rasa)','≈ 5 ml · 5 g','3 cucharaditas = 1 cucharada sopera.'],
+      ['Cucharón de servir','1 cucharón raso ≈ ½ taza ≈ 120 ml',''],
+      ['Taza medidora','1 taza ≈ 240 ml · ½ taza ≈ 120 ml · ¼ taza ≈ 60 ml','Si no tienes taza medidora, un vaso de agua corriente ≈ 1 taza.'],
+      ['Vaso de agua','≈ 250 ml','Es la unidad con la que contamos tu hidratación del día.']]]
+  ],
+  faq:[
+    ['¿El peso de la proteína es en crudo o en cocido?','En crudo. Siempre que en tu plan diga gramos de pollo, carne, cerdo o pescado, es el peso antes de cocinar. Al cocinarse pierde entre el 20 % y el 30 % de su peso en agua, así que 150 g de pollo crudo te quedan en unos 110 g en el plato, y eso está bien: no te está faltando comida.\nSi solo puedes pesarlo ya cocido, usa esta regla: multiplica por 1,3. O sea, 100 g cocidos ≈ 130 g crudos.'],
+    ['¿Y el arroz, la pasta y los granos?','Al contrario: esos van en cocido, porque es como los sirves. Media taza de arroz cocido son unos 100 g, y salen de apenas 35 g de arroz crudo. Los fríjoles, las lentejas y los garbanzos también los contamos cocidos (½ cucharón ≈ ½ taza).'],
+    ['¿Tengo que pesar todo con báscula?','No. La báscula ayuda las primeras dos semanas para que tu ojo se calibre, y después tu mano hace el trabajo. Mira la guía de porciones de este mismo plan: la palma, el puño y el pulgar son medidas que siempre llevas puestas y no fallan tanto como uno cree.\nLo que sí vale la pena pesar siempre es la grasa (aceite, crema de maní, frutos secos), porque ahí un error pequeño pesa mucho.'],
+    ['¿Puedo cambiar una opción por otra del mismo tiempo de comida?','Sí, para eso están. Todas las opciones de un mismo tiempo son equivalentes entre ellas, así que elige la que te quede más fácil ese día. Lo que no conviene es mover una opción de almuerzo a la cena o al contrario, porque cada tiempo está armado pensando en la hora del día y en tu entrenamiento.'],
+    ['¿Puedo repetir la misma opción toda la semana?','Puedes, pero no es lo ideal. Las opciones están pensadas para que rotes y tu cuerpo reciba distintos micronutrientes: no es lo mismo comer pollo cinco días que rotar entre pollo, pescado, huevo y carne. Mi sugerencia: no repitas la misma opción más de dos días seguidos.'],
+    ['¿Qué hago si se me pasa la hora de un tiempo de comida?','Cómelo cuando puedas, aunque sea tarde, y sigue con el resto del día normal. Lo que no quiero es que te lo saltes y luego "compenses" comiendo doble en el siguiente: eso es lo que más desordena el hambre del resto del día.\nSi de plano ya no alcanza (por ejemplo, la media tarde cuando ya son las 8 p.m.), déjala pasar y come tu cena normal.'],
+    ['Me quedé con hambre después de comer. ¿Qué hago?','Primero: tómate un vaso de agua y espera 15 minutos, porque buena parte del hambre inmediata después de comer es sed o es velocidad (comer rápido no le da tiempo al cuerpo de avisar que ya está lleno).\nSi el hambre sigue, súmale verduras libres: ensalada, pepino, tomate, zanahoria. Y escríbeme: si te está pasando todos los días en el mismo tiempo de comida, es información útil y ajustamos ese tiempo en el control.'],
+    ['No me cabe toda la comida. ¿Está mal si dejo?','No está mal, y no quiero que comas con angustia. Si un plato te queda grande, come primero la proteína y la verdura, y deja el almidón. Eso conserva lo más importante del plato.\nPero igual cuéntame, porque si te pasa seguido significa que tenemos que redistribuir: quizá te sirve mejor comer un poco menos en cada tiempo y agregar uno más.'],
+    ['¿Puedo tomar café?','Sí. Hasta 3 tazas al día está perfecto, mejor antes de las 4 p.m. para que no te toque el sueño. Lo que cuidamos no es el café: es lo que le pones. Sin azúcar y sin crema de leche. Con un chorrito de leche no hay problema.'],
+    ['¿Y los endulzantes?','Puedes usarlos. Los que mejor tolera la mayoría son estevia y sucralosa. Si te caen pesados o te inflan, prueba con menos cantidad: casi siempre el problema es la dosis, no el producto. Lo ideal a mediano plazo es que tu paladar se vaya acostumbrando a menos dulce en general.'],
+    ['¿Puedo tomar alcohol?','Te voy a dar el dato sin regaño: el alcohol aporta calorías que no alimentan, y además le pone freno a la quema de grasa durante las horas siguientes. Entre menos, mejor, y si va a estar, que sea algo muy ocasional y en poca cantidad.\nY un dato práctico que importa más de lo que parece: lo que más daño hace no es la bebida, es lo que uno come a las 2 a.m. Si sabes que vas a salir, come tu cena completa antes y lleva agua.'],
+    ['¿Tengo que hacer el plan perfecto para que funcione?','No, y esta es probablemente la idea más importante de toda esta sección. En consulta yo trabajo con el principio del 80-20, y funciona así: si el 80 % de tus hábitos (la alimentación, el entrenamiento, el descanso y la hidratación) hacen parte de un estilo de vida saludable y siguen tu plan, entonces no va a haber mayor inconveniente en que en el 20 % restante te permitas una comida por fuera, un postre, disfrutar un poquito de la vida.\nFíjate en lo que eso significa en la práctica: de las 35 comidas que haces en una semana, unas 28 son tu plan y unas 7 pueden ser flexibles. Eso es mucho más espacio del que la gente cree que tiene, y es justamente lo que hace que un proceso se sostenga durante años en lugar de durar tres semanas.\nY al revés también: el problema nunca es la comida del 20 %. El problema es cuando el 20 % se vuelve 50 % sin que uno se dé cuenta. Por eso prefiero decírtelo con un número.'],
+    ['¿Y si me invitan a una comida o a un cumpleaños?','Vas y comes. Eso es exactamente el 20 % del que te hablé arriba: un día no desarma un proceso, igual que un día perfecto no lo arma. Lo que sí funciona: ese día desayuna y almuerza normal (no llegues con hambre acumulada), sírvete primero proteína y verdura, y al otro día retomas tu plan sin "castigos" ni ayunos de compensación.\nMira también la sección de comer afuera: ahí te dejé qué pedir en los restaurantes a los que más vas.'],
+    ['¿Qué hago el fin de semana?','El plan aplica los siete días, pero el fin de semana lo manejamos con más flexibilidad: uno o dos tiempos libres, no dos días libres completos. Ahí está otra vez el 80-20: una comida por fuera el sábado cabe de sobra; el sábado y el domingo enteros por fuera, no, porque eso ya son seis o siete comidas y se te fue el 20 % completo en dos días.\nMi recomendación: sábado o domingo, elige una comida que de verdad disfrutes y planéala. Lo que desordena no es el antojo: es el antojo sin plan.'],
+    ['Me dan muchas ganas de dulce. ¿Eso se quita?','Se baja bastante, sí, y hay dos razones por las que aparece: comer poca proteína y dejar pasar muchas horas sin comer. Si tus tiempos están completos y en hora, el antojo pierde fuerza en unas dos semanas.\nMientras tanto, no pelees con él: en tu plan hay opciones dulces pensadas para eso. Úsalas.'],
+    ['¿Puedo cambiar el pollo por pescado, o la carne por cerdo?','Sí, dentro del mismo grupo son intercambiables: pollo, pavo, pescado blanco, cerdo magro y res magra juegan en el mismo equipo con la misma porción. El pescado azul (salmón, trucha) trae más grasa buena, así que si lo usas, baja un poco el aceite de ese plato.'],
+    ['¿Cuánta agua debo tomar?','Tu meta diaria está marcada en la sección de hidratación de este plan, en vasos, para que la vayas marcando. Reparte: un vaso al despertar, uno con cada comida y uno entre comidas. Si tu orina es amarillo claro, vas bien; si es oscura, te falta agua.'],
+    ['¿Puedo echarle sal a la comida?','Sí, en cantidad normal al cocinar. Lo que no conviene es el salero en la mesa y, sobre todo, el sodio escondido: caldos en cubo, embutidos, salsas listas, snacks de paquete y sopas de sobre. Ahí está el 70 % del sodio que uno come sin darse cuenta.'],
+    ['¿Cuándo voy a ver cambios?','Lo primero que cambia no se ve en la báscula: energía, digestión y sueño mejoran en la primera o segunda semana. Los cambios de composición corporal se miden bien al mes, y eso es lo que comparamos en tu control con la antropometría.\nLa báscula sube y baja hasta 2 kg en un mismo día por agua, sal y ciclo menstrual. No tomes decisiones con un solo número.'],
+    ['¿Tengo que tomar los suplementos para que el plan funcione?','No. El plan funciona por sí solo; los suplementos están ahí para hacerte más fácil llegar a la meta, no para reemplazar comida. Si alguno no está a tu alcance este mes, dímelo y te doy el equivalente en comida real.'],
+    ['Me sentí mal del estómago / me inflé con algo del plan. ¿Qué hago?','Sácalo por ahora y escríbeme contándome qué fue. No hay un alimento imprescindible: siempre hay cómo reemplazarlo. Lo que no quiero es que aguantes incomodidad en silencio, porque eso es lo que termina tumbando los procesos.'],
+    ['¿Cómo te aviso si algo no me está funcionando?','Por WhatsApp, con el botón que está al final de este plan. Mientras más concreto, mejor: qué tiempo de comida, qué opción y qué te pasó. Con eso ajusto sin tener que esperar al control.']
+  ],
+  afuera:{
+    intro:'Tú comes fuera más que la mayoría de mis pacientes: tres de cinco almuerzos entre semana, sábado y domingo, y una semana de cada cuatro viajando. Así que esta sección no es para las excepciones, es para tu semana normal. La regla que resuelve el 90% de los menús es siempre la misma: una proteína a la plancha, al horno o a la parrilla del tamaño de la palma de tu mano; el almidón del tamaño de tu puño cerrado, servido una sola vez; verduras sin límite; y las salsas aparte, siempre. Si pides la ensalada antes del plato fuerte, llegas a él con menos hambre y el resto se ordena solo.',
+    sitios:[
+      ['Cualquier restaurante','La regla que sirve en todos',['Primero la proteína: escoge el plato por su proteína, no por el acompañamiento. Carne de res, pollo, salmón o mariscos a la plancha, al horno o a la parrilla. Esa decisión sola ya te resolvió la mitad.','El almidón, una sola vez. Arroz o papa o patacón o pan, nunca dos. Del tamaño de tu puño cerrado. Si el plato viene con dos, deja uno.','Las salsas aparte. "Con la salsa aparte, por favor" es la frase que más te va a servir en estos tres meses. Así tú decides cuánta va, y suele ser la mitad de la que traen.','Ensalada de entrada, siempre. Pídela apenas te sientes. Es lo que evita que llegues al plato principal con hambre de cinco horas.','Lo que cuidamos por tu estómago: nada frito, nada apanado y nada muy condimentado. Eso no es por calorías: es porque te cae mal, y tú ya lo sabes.'],'"Una proteína a la plancha, el arroz en porción pequeña, doble verdura y la salsa aparte". Y una ensalada para la mesa antes de que llegue todo.'],
+      ['Crepes & Waffles','Ensaladas · crepes · pitas',['Ensaladas de la carta con proteína (pollo, salmón o camarón) y el aderezo aparte. Es la opción más completa del menú.','Pita o crepe salado de pollo o de verduras: una sola unidad queda bien de porción.','Bowls y platos con quinoa o fríjol: buena fibra y buena proteína en el mismo plato.','Si vas por el helado: una bola pequeña, no la copa con topping. La copa es un postre de tres porciones.'],'"El aderezo aparte, por favor" y sin pan de acompañamiento. Las ensaladas de la casa ya vienen generosas: no necesitas entrada.'],
+      ['Bacu','Bowls · armas el tuyo',['Arma tu propio bowl: 1 proteína (pollo, salmón, carne), 1 base de almidón, 3 verduras y la salsa aparte. Es la opción más fácil de ajustar de toda esta lista.','Bowls de salmón con quinoa o de pollo con vegetales: proteína alta y grasa controlada.','Pide la base de verduras o de quinoa en lugar de arroz si ese día ya comiste almidón.','Evita las salsas cremosas (sour cream, queso); las vinagretas y las de yogur rinden igual de rico.'],'"La salsa aparte y doble verdura en lugar de doble base". Eso te sube el volumen del plato sin subir las calorías.'],
+      ['Chilitaco','Tu sitio de siempre · cómo armar el bowl',['Bowl, nunca burrito. La tortilla del burrito es el almidón más grande de toda la carta y ni siquiera la saboreas. El bowl te da exactamente la misma comida sin ella.','La proteína: pollo o carne a la parrilla. Las carnitas son cerdo: me dijiste que el cerdo no te gusta mucho, así que ahí hay una que puedes saltarte sin perder nada.','La base: media porción de arroz, como ya la pides, o fríjol negro. Uno de los dos, no los dos. Si ese día ya almorzaste con arroz, pide la base de lechuga y queda perfecto.','Carga la lechuga y el pico de gallo sin medida. Son los que le dan volumen al bowl y no suman casi nada, así que la doble lechuga siempre vale la pena.','El guacamole sí, la crema y el queso derretido no. El guacamole es grasa buena y te deja satisfecha; los otros dos pesan el plato sin que se note.','Los nachitos son el único punto a cuidar. Me contaste que a veces los pides: son fritos, y son justo lo que menos le conviene a tu estómago. Si ese día los quieres, que reemplacen el arroz, no que se sumen.'],'"Bowl de carne a la parrilla, media porción de arroz, doble lechuga, pico de gallo y guacamole, sin crema y sin queso".'],
+      ['El Corral / hamburguesería','Hamburguesas',['Hamburguesa sencilla de carne o de pollo a la plancha, sin tocineta y sin doble queso.','Cambia las papas por ensalada o pide la porción pequeña y compártela.','Si hay pollo a la plancha en pan integral, esa es la mejor carta del sitio.','Pide las salsas aparte: una hamburguesa bañada en salsa de la casa suma fácil 200 kcal invisibles.'],'"Sencilla, sin tocineta, salsas aparte y cambio las papas por ensalada". Y si el pan viene gigante, dejar la mitad de la tapa es totalmente válido.'],
+      ['Subway','Sándwiches armados',['Sub de 15 cm (no el de 30) en pan integral, con pollo, pavo o atún.','Todas las verduras que ofrezcan: ahí es gratis subir el volumen del plato.','Salsas: mostaza, vinagre, aceite de oliva en poca cantidad. Las cremosas (ranch, chipotle, miel mostaza) son las que pesan.','Opción aún mejor: pide la ensalada con la misma proteína, y un pan aparte si quieres almidón.'],'"Integral de 15, doble verdura, sin queso y la salsa aparte". Es probablemente el sitio más fácil de ajustar que existe.'],
+      ['Corrientazo / comida criolla','Almuerzo del día',['Pide la proteína a la plancha, al horno o sudada, no frita ni apanada. Casi siempre tienen las dos opciones.','Elige entre arroz O el fríjol/lenteja O el plátano: un almidón, no tres. Pide doble ensalada en lugar de los otros dos.','La sopa es buena entrada si es de verduras; si viene con papa, yuca y plátano, es ya el almidón del día.','El jugo: pídelo en agua y sin azúcar. El jugo en leche con azúcar es casi un postre.'],'"Con doble ensalada en vez de papa, y el jugo en agua sin azúcar". Nadie se molesta y te cambia el plato por completo.'],
+      ['Asadero / parrilla','Carnes',['Lomo, punta de anca o pechuga a la parrilla: término medio o tres cuartos, sin mantequilla encima.','Chuzo de pollo o de carne con ensalada y arepa delgada.','Pide ensalada verde o verduras asadas como acompañamiento en lugar de papa a la francesa y yuca frita.','El chicharrón, la morcilla y la papa rellena son los acompañantes que más grasa suman: uno, para probar, y compartido.'],'"Sin mantequilla, con ensalada y una sola porción de almidón". Si la carne llega del tamaño de dos palmas, lleva la mitad para la casa.'],
+      ['Sushi / comida asiática','Sushi · wok · bowls',['Sashimi, niguiri o rollos sin tempura y sin salsas dulces: ahí el pescado es la estrella.','Wok de pollo, camarón o carne con verduras y arroz integral si lo tienen; pide media porción de arroz o de noodles.','Edamame es la mejor entrada del menú: proteína, fibra y nada más.','Lo que cuidamos: tempura, rollos apanados, salsa de anguila y mayonesa picante. Son los que convierten el sushi en un plato pesado.'],'"Sin tempura, sin salsas dulces, y la soya baja en sodio". Pide la mitad del arroz y compensa con sashimi.'],
+      ['Pizzería','Pizza · pasta',['2 porciones de pizza de masa delgada con proteína (pollo, jamón, atún) y muchas verduras, acompañadas de ensalada grande.','Masa delgada sobre masa gruesa o rellena: la misma porción, la mitad del almidón.','Si es pasta: salsa roja o al ajillo, no las cremosas (alfredo, carbonara, cuatro quesos).','Empieza por la ensalada. Es el truco más viejo y el que mejor funciona en una pizzería.'],'"Masa delgada, doble vegetal y sin borde de queso". Y pide una ensalada para la mesa antes de que llegue la pizza.'],
+      ['Café / panadería','Juan Valdez, Tostao, panadería del barrio',['Café negro, americano o tinto sin azúcar. Con leche deslactosada también está bien.','Yogur con fruta y granola (la granola en poca cantidad) o un sándwich de pollo o pavo en pan integral.','Huevo cocido o pan con queso campesino si hay: suma proteína, que es justo lo que falta en una panadería.','Lo que cuidamos: frappés, capuchinos saborizados y jugos de botella. Un frappé grande puede ser una comida entera en azúcar.'],'"Sin azúcar, sin crema batida y sin sirope". Si quieres algo dulce, un pan pequeño con tu café rinde más que una bebida dulce.'],
+      ['Domicilio en casa','Cuando se pide y no se sale',['Pide el plato, no el combo. El combo casi siempre es lo que te sobra: gaseosa, papas y postre.','Sirve en plato y guarda el resto antes de empezar a comer. Comer del empaque es comer sin medida.','Añádele tú la verdura: una ensalada rápida de lechuga, tomate y pepino al lado de lo que pediste cambia el plato entero.','Agua o gaseosa sin azúcar. Es el cambio más grande con el menor esfuerzo de toda esta lista.'],'El filtro de los 30 segundos: antes de confirmar el pedido, pregúntate dónde está la proteína y dónde está la verdura. Si no están, añádelas. Casi siempre se puede.'],
+      ['Restaurante de viaje y hotel','La semana que estás por fuera',['El buffet del desayuno es tu mejor momento del día. Huevos al momento, fruta y avena hay en casi todos. Arma el plato completo antes de dar la primera vuelta.','Las cenas de trabajo suelen ser tarde. Por eso la media tarde en viaje importa más, no menos: es lo que evita que llegues a esa cena con hambre de cinco horas.','En el menú siempre hay una proteína a la plancha y siempre hay arroz. Esos dos existen en cualquier carta del mundo, y con la salsa aparte ya tienes tu plato.','Lo único que hay que empacar son unos sobres de proteína y unas almendras. Ocupan nada y te salvan cualquier aeropuerto.'],'"A la plancha, con verduras y una porción pequeña de arroz, salsa aparte".']
+    ]
+  },
+  nutri:{n:'Juan Sebastián Muñoz Ortiz',r:'JSMO · Nutricionista deportivo',tel:'317 549 9759',wa:'573175499759',ig:'@juansenutricionista'}
+};
+</script>
+<script id="mq-bodygeo">
+/* ================= GEOMETRÍA DEL CUERPO (superficie implícita + surface nets) ================= */
+window.JGBody=(function(){
+  var sqrt=Math.sqrt,abs=Math.abs;
+  /* Elipsoide (aprox. de distancia) */
+  function sdE(x,y,z,cx,cy,cz,rx,ry,rz){
+    var px=(x-cx)/rx,py=(y-cy)/ry,pz=(z-cz)/rz,k0=sqrt(px*px+py*py+pz*pz);
+    var qx=px/rx,qy=py/ry,qz=pz/rz,k1=sqrt(qx*qx+qy*qy+qz*qz);
+    return k1<1e-9?-Math.min(rx,ry,rz):k0*(k0-1)/k1;
+  }
+  /* Cono redondeado (cápsula con radio variable) */
+  function sdRC(x,y,z,ax,ay,az,bx,by,bz,r1,r2){
+    var pax=x-ax,pay=y-ay,paz=z-az,bax=bx-ax,bay=by-ay,baz=bz-az;
+    var h=(pax*bax+pay*bay+paz*baz)/(bax*bax+bay*bay+baz*baz);h=h<0?0:h>1?1:h;
+    var dx=pax-bax*h,dy=pay-bay*h,dz=paz-baz*h;
+    return sqrt(dx*dx+dy*dy+dz*dz)-(r1+(r2-r1)*h);
+  }
+  function smin(a,b,k){var h=k-abs(a-b),m=a<b?a:b;if(h<=0)return m;h/=k;return m-h*h*k*.25}
+  function smax(a,b,k){return -smin(-a,-b,k)}
+
+  /* Figura femenina, 1,72 m. s.f = nivel de grasa (0 magra … 1 más grasa) */
+  function sdf(s){
+    var f=s.f;
+    var bzc=.002+.012*f;
+    return function(x,y,z){
+      var ax=abs(x),d=1e9;
+      /* Tronco */
+      if(y>.76&&y<1.58&&ax<.28){
+        d=sdE(x,y,z,0,1.315,-.014,.124,.15,.086);                                        /* caja torácica */
+        d=smin(d,sdE(ax,y,z,.05,1.288,.058,.05,.047,.042),.035);                          /* busto */
+        d=smin(d,sdE(x,y,z,0,1.135,bzc,.104+.018*f,.13,.076+.02*f),.09);                  /* cintura y abdomen */
+        d=smin(d,sdE(x,y,z,0,.955,-.01,.142+.01*f,.104,.098+.006*f),.085);               /* pelvis */
+        d=smin(d,sdE(ax,y,z,.07,.9,-.056,.08+.005*f,.088,.064+.008*f),.06);              /* glúteos */
+        d=smin(d,sdE(ax,y,z,.118,.95,0,.024+.012*f,.06,.045+.006*f),.06);                   /* caderas */
+        d=smin(d,sdE(ax,y,z,.085,1.25,-.036,.05,.1,.045),.06);                            /* espalda */
+      }
+      /* Cuello, cabeza y cabello */
+      if(y>1.36&&ax<.2){
+        d=smin(d,sdRC(x,y,z,0,1.43,-.012,0,1.6,0,.046,.04),.04);
+        d=smin(d,sdRC(ax,y,z,.02,1.48,-.03,.13,1.445,-.014,.032,.027),.05);
+        if(y>1.42&&ax<.1){
+          d=smin(d,sdE(x,y,z,0,1.655,-.004,.069,.092,.085),.03);                         /* cráneo */
+          d=smin(d,sdE(x,y,z,0,1.6,.022,.047,.047,.053),.04);                             /* mandíbula */
+          d=smin(d,sdRC(x,y,z,0,1.648,.08,0,1.632,.087,.007,.009),.018);                  /* nariz suave */
+          d=smin(d,sdE(x,y,z,0,1.672,-.014,.077,.094,.092),.02);                          /* cabello */
+          d=smin(d,sdRC(x,y,z,0,1.665,-.09,0,1.47,-.104,.032,.016),.03);                  /* cola de caballo */
+        }
+      }
+      /* Brazos */
+      if(ax>.09&&y>.72&&y<1.5){
+        d=smin(d,sdE(ax,y,z,.148,1.41,-.008,.042,.048,.045),.045);                        /* hombros */
+        d=smin(d,sdRC(ax,y,z,.156,1.395,-.008,.188,1.13,-.014,.035+.004*f,.028),.035);
+        d=smin(d,sdE(ax,y,z,.172,1.26,-.026,.025+.007*f,.066,.023+.009*f),.03);           /* tríceps */
+        d=smin(d,sdRC(ax,y,z,.188,1.13,-.014,.212,.885,.012,.028,.02),.03);               /* antebrazo */
+        d=smin(d,sdE(ax,y,z,.219,.81,.016,.018,.053,.032),.022);                          /* mano */
+        d=smin(d,sdRC(ax,y,z,.211,.845,.04,.207,.805,.051,.009,.007),.012);               /* pulgar */
+      }
+      /* Piernas */
+      if(y<1.04&&ax<.24){
+        d=smin(d,sdRC(ax,y,z,.085,.93,0,.09,.52,.006,.082+.01*f,.05),.06);              /* muslo */
+        d=smin(d,sdE(ax,y,z,.09,.74,.018,.052+.006*f,.15,.047+.006*f),.05);                /* cuádriceps */
+        d=smin(d,sdE(ax,y,z,.09,.5,.01,.043,.045,.043),.035);                             /* rodilla */
+        d=smin(d,sdRC(ax,y,z,.09,.5,-.004,.088,.09,-.01,.042,.025),.035);                 /* pierna */
+        d=smin(d,sdE(ax,y,z,.09,.375,-.022,.042,.088,.039),.04);                          /* pantorrilla */
+        d=smin(d,sdRC(ax,y,z,.088,.054,-.028,.092,.02,.1,.029,.019),.03);                 /* pie */
+      }
+      return d;
+    };
+  }
+
+  /* Surface nets: malla continua y suave a partir del campo de distancia */
+  var CO=[[0,0,0],[1,0,0],[0,1,0],[1,1,0],[0,0,1],[1,0,1],[0,1,1],[1,1,1]];
+  var ED=[[0,1],[2,3],[4,5],[6,7],[0,2],[1,3],[4,6],[5,7],[0,4],[1,5],[2,6],[3,7]];
+  function build(s,cs){
+    cs=cs||.009;
+    var f=sdf(s),x0=-.34,y0=-.012,z0=-.18;
+    var nx=Math.ceil(.68/cs)+1,ny=Math.ceil(1.81/cs)+1,nz=Math.ceil(.39/cs)+1;
+    var NXY=nx*ny,F=new Float32Array(NXY*nz),i,j,k,c;
+    for(k=0;k<nz;k++){var z=z0+k*cs;for(j=0;j<ny;j++){var y=y0+j*cs,o=j*nx+k*NXY;for(i=0;i<nx;i++)F[o+i]=f(x0+i*cs,y,z)}}
+    var cx=nx-1,cxy=(nx-1)*(ny-1),V=new Int32Array(cxy*(nz-1)).fill(-1),P=[],val=new Float32Array(8);
+    for(k=0;k<nz-1;k++)for(j=0;j<ny-1;j++)for(i=0;i<nx-1;i++){
+      var mask=0;
+      for(c=0;c<8;c++){var v=F[(i+CO[c][0])+(j+CO[c][1])*nx+(k+CO[c][2])*NXY];val[c]=v;if(v<0)mask|=1<<c}
+      if(mask===0||mask===255)continue;
+      var sx=0,sy=0,sz=0,n=0;
+      for(var e=0;e<12;e++){
+        var A=ED[e][0],B=ED[e][1];
+        if(((mask>>A)&1)!==((mask>>B)&1)){
+          var tt=val[A]/(val[A]-val[B]);
+          sx+=CO[A][0]+(CO[B][0]-CO[A][0])*tt;sy+=CO[A][1]+(CO[B][1]-CO[A][1])*tt;sz+=CO[A][2]+(CO[B][2]-CO[A][2])*tt;n++;
+        }
+      }
+      V[i+j*cx+k*cxy]=P.length/3;
+      P.push(x0+(i+sx/n)*cs,y0+(j+sy/n)*cs,z0+(k+sz/n)*cs);
+    }
+    var IDX=[];
+    function q(a,b2,c2,d2,fl){
+      a=V[a];b2=V[b2];c2=V[c2];d2=V[d2];
+      if(a<0||b2<0||c2<0||d2<0)return;
+      if(fl)IDX.push(a,b2,c2,a,c2,d2);else IDX.push(a,c2,b2,a,d2,c2);
+    }
+    function C(i2,j2,k2){return i2+j2*cx+k2*cxy}
+    for(k=1;k<nz-1;k++)for(j=1;j<ny-1;j++)for(i=1;i<nx-1;i++){
+      var v0=F[i+j*nx+k*NXY],in0=v0<0;
+      if(in0!==(F[i+1+j*nx+k*NXY]<0))q(C(i,j-1,k-1),C(i,j,k-1),C(i,j,k),C(i,j-1,k),in0);
+      if(in0!==(F[i+(j+1)*nx+k*NXY]<0))q(C(i-1,j,k-1),C(i-1,j,k),C(i,j,k),C(i,j,k-1),in0);
+      if(in0!==(F[i+j*nx+(k+1)*NXY]<0))q(C(i-1,j-1,k),C(i,j-1,k),C(i,j,k),C(i-1,j,k),in0);
+    }
+    var pos=new Float32Array(P),nor=new Float32Array(P.length),ep=cs*.5;
+    for(var p=0;p<P.length;p+=3){
+      var X=P[p],Y=P[p+1],Z=P[p+2];
+      var gx=f(X+ep,Y,Z)-f(X-ep,Y,Z),gy=f(X,Y+ep,Z)-f(X,Y-ep,Z),gz=f(X,Y,Z+ep)-f(X,Y,Z-ep),l=sqrt(gx*gx+gy*gy+gz*gz)||1;
+      nor[p]=gx/l;nor[p+1]=gy/l;nor[p+2]=gz/l;
+    }
+    return {pos:pos,nor:nor,idx:new Uint32Array(IDX)};
+  }
+  return {build:build,sdf:sdf};
+})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
+<script>
+(function(){
+  var D=window.MANU;
+  var $=function(s){return document.querySelector(s)};
+  function load(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
+  function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function keyOf(d){return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()}
+  function parseKey(k){var a=String(k).split('-');return new Date(+a[0],(+a[1])-1,+a[2])}
+  function fmt(v,d){return (+v).toFixed(d==null?1:d).replace('.',',')}
+  var reduce=!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
+  var CHECK='<svg width="14" height="14" aria-hidden="true"><use href="#ic-check"></use></svg>';
+  var toastT;function toast(m){var t=$('#toast');t.textContent=m;t.classList.add('is-on');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('is-on')},2000)}
+  var todayKey=keyOf(new Date());
+  if(!load('mq-base',null))save('mq-base',todayKey);
+
+  /* ---------- Carta, objetivos, métricas ---------- */
+  $('#letter').innerHTML='<span class="eyebrow">Tu nutricionista te escribe</span><h2>¡Hola, <em>Manuela!</em></h2>'+D.intro.map(function(p){return '<p>'+esc(p)+'</p>'}).join('')+'<p class="sign">'+esc(D.firma)+'</p>';
+  $('#considera').innerHTML=D.considera.map(function(c){return '<span class="chip">'+esc(c)+'</span>'}).join('');
+  $('#objetivos').innerHTML=D.objetivos.map(function(o){return '<li><span class="tick">'+CHECK+'</span><span>'+esc(o)+'</span></li>'}).join('');
+  $('#metrics').innerHTML=D.metricas.map(function(m){return '<div class="metric'+(m.main?' main':'')+'"><span class="k">'+esc(m.k)+'</span><span class="v">'+m.v+(m.u?'<small>'+m.u+'</small>':'')+'</span><p class="m"><b>Meta</b><span>'+esc(m.meta)+'</span></p></div>'}).join('');
+
+  /* ---------- Cuenta regresiva ---------- */
+  var ctl=parseKey('2026-11-22');
+  function daysLeft(){var t=new Date();t=new Date(t.getFullYear(),t.getMonth(),t.getDate());return Math.round((ctl-t)/86400000)}
+  function renderCount(){
+    var n=daysLeft();
+    $('#cdNum').textContent=n>0?n:(n===0?'Hoy':'✓');
+    $('#cdTxt').textContent=n>1?'días para el 22 de noviembre de 2026':n===1?'día para el 22 de noviembre de 2026':n===0?'es tu control: lleva tu registro':'tu primer control ya pasó';
+  }
+  renderCount();
+
+  /* ---------- Registro (comidas escogidas + cómo te fue) ---------- */
+  var log=load('mq-log',{});
+  var week=load('mq-week','cali');
+  function day(k){k=k||todayKey;if(!log[k])log[k]={week:week,picks:{},rate:{}};return log[k]}
+  function saveLog(){save('mq-log',log);try{window.dispatchEvent(new Event('mq-progress'))}catch(e){}}
+  function W(){return D.semanas[week]}
+  function mealsOf(w){return D.semanas[w].comidas}
+
+  /* ---------- Agua ---------- */
+  var water=load('mq-water',{date:todayKey,n:0});if(water.date!==todayKey)water={date:todayKey,n:0};
+  function renderWater(){
+    var h='';for(var i=0;i<10;i++)h+='<button class="glass drop'+(i<water.n?' is-on':'')+'" type="button" data-w="'+i+'" aria-label="Vaso '+(i+1)+'" aria-pressed="'+(i<water.n)+'" style="color:#EC7FA9"><svg aria-hidden="true"><use href="#ic-drop"></use></svg></button>';
+    $('#drops').innerHTML=h;$('#wTxt').textContent=water.n+' / 10 vasos';
+  }
+  $('#drops').addEventListener('click',function(e){var b=e.target.closest('[data-w]');if(!b)return;var i=+b.dataset.w;water.n=(water.n===i+1)?i:i+1;save('mq-water',water);renderWater();if(water.n===10)toast('¡Diez vasos! Meta de agua cumplida')});
+
+  /* ---------- Día ---------- */
+  function renderDay(){
+    var d=log[todayKey],ms=mealsOf(week),n=0;
+    var list=ms.map(function(m){var p=d&&d.picks[m.id];if(p)n++;return '<li class="'+(p?'done':'')+'"><span>'+esc(m.n)+'</span><span>'+(p?esc(p[1]):esc(m.h))+'</span></li>'}).join('');
+    $('#dayList').innerHTML=list;
+    $('#ring').style.setProperty('--p',Math.round(n/ms.length*100));
+    $('#ring').style.background='conic-gradient(#EC7FA9 '+(n/ms.length*100)+'%,color-mix(in srgb,var(--pink) 18%,transparent) 0)';
+    $('#ringTxt').textContent=n+'/'+ms.length;
+    $('#dayWeek').textContent=W().nombre;
+    $('#dayTitle').textContent=new Date().toLocaleDateString('es-CO',{weekday:'long',day:'numeric',month:'long'}).replace(/^./,function(c){return c.toUpperCase()});
+  }
+
+  /* ---------- Plan ---------- */
+  var meal=load('mq-meal',null);
+  function renderWeeks(){
+    $('#weeks').innerHTML=['cali','viaje'].map(function(k){var s=D.semanas[k];return '<button class="glass'+(k===week?' is-on':'')+'" type="button" role="tab" aria-selected="'+(k===week)+'" data-wk="'+k+'"><b>'+esc(s.nombre)+'</b><span>'+esc(s.sub)+'</span></button>'}).join('');
+    $('#weekDesc').innerHTML=esc(W().desc)+'<br><span class="chip" style="margin-top:10px">'+esc(W().tag)+'</span>';
+    $('#macros').innerHTML=W().macros.map(function(m){return '<div class="macro"><b>'+m[0]+'<small>'+m[1]+'</small></b><span>'+esc(m[2])+'</span></div>'}).join('');
+  }
+  function curMeal(){var ms=mealsOf(week);for(var i=0;i<ms.length;i++)if(ms[i].id===meal)return ms[i];meal=ms[0].id;return ms[0]}
+  function renderTabs(){
+    var d=log[todayKey];curMeal();
+    $('#mealTabs').innerHTML=mealsOf(week).map(function(m){var on=m.id===meal,pk=d&&d.picks[m.id];return '<button class="glass meal-tab'+(on?' is-on':'')+(pk?' picked':'')+'" type="button" role="tab" aria-selected="'+on+'" data-meal="'+m.id+'"><b>'+esc(m.n)+'</b><span>'+esc(m.h)+'</span></button>'}).join('');
+  }
+  function renderPanel(){
+    var m=curMeal(),d=log[todayKey],pk=d&&d.picks[m.id];
+    var h='<div class="meal-note"><span class="q" aria-hidden="true">“</span><div><p>'+esc(m.nota)+'</p>'+(m.chip?'<span class="chip" style="margin-top:10px">'+esc(m.chip)+'</span>':'')+'</div></div><div class="opts">';
+    m.ops.forEach(function(o,i){
+      var on=pk&&pk[0]===i;
+      h+='<article class="opt'+(on?' is-picked':'')+'" style="--d:'+(i*.05)+'s"><div class="opt-top"><span class="opt-n">OPCIÓN '+(i+1)+'</span><span class="lvl lvl-'+o[0]+'">'+o[0]+'</span></div><h3>'+esc(o[1])+'</h3><ul class="ing">'+
+        o[2].split(' · ').map(function(x){return '<li><span>'+esc(x)+'</span></li>'}).join('')+'</ul>'+
+        '<button class="glass'+(on?' is-on':'')+'" type="button" data-pick="'+i+'">'+(on?CHECK+' La escogí hoy':'La escogí hoy')+'</button></article>';
+    });
+    $('#mealPanel').innerHTML=h+'</div>';
+  }
+  $('#weeks').addEventListener('click',function(e){var b=e.target.closest('[data-wk]');if(!b)return;week=b.dataset.wk;save('mq-week',week);var d=log[todayKey];if(d){d.week=week;saveLog()}meal=null;renderWeeks();renderTabs();renderPanel();renderDay()});
+  $('#mealTabs').addEventListener('click',function(e){var b=e.target.closest('[data-meal]');if(!b)return;meal=b.dataset.meal;save('mq-meal',meal);renderTabs();renderPanel()});
+  $('#mealPanel').addEventListener('click',function(e){
+    var b=e.target.closest('[data-pick]');if(!b)return;
+    var m=curMeal(),i=+b.dataset.pick,d=day();d.week=week;
+    if(d.picks[m.id]&&d.picks[m.id][0]===i){delete d.picks[m.id];toast('Quitado del registro')}
+    else{d.picks[m.id]=[i,m.ops[i][1]];toast(m.n+': guardado en tu registro')}
+    saveLog();renderTabs();renderPanel();renderDay();renderHist();
+  });
+
+  /* ---------- Registro ---------- */
+  $('#logIntro').textContent=D.registro.intro;
+  function renderRates(){
+    var d=log[todayKey];
+    $('#rates').innerHTML=D.registro.escalas.map(function(s){
+      var v=d&&d.rate[s.k];
+      return '<div class="rate"><h4>'+esc(s.n)+'</h4><div class="row">'+s.ops.map(function(o,i){return '<button class="glass'+(v===i?' is-on':'')+'" type="button" data-r="'+s.k+'" data-i="'+i+'" aria-pressed="'+(v===i)+'">'+esc(o)+'</button>'}).join('')+'</div></div>';
+    }).join('');
+  }
+  $('#rates').addEventListener('click',function(e){var b=e.target.closest('[data-r]');if(!b)return;var d=day(),k=b.dataset.r,i=+b.dataset.i;if(d.rate[k]===i)delete d.rate[k];else d.rate[k]=i;saveLog();renderRates();renderHist()});
+  function mealName(w,id){var ms=mealsOf(w);for(var i=0;i<ms.length;i++)if(ms[i].id===id)return ms[i].n;return id}
+  function lines(){
+    var ks=Object.keys(log).sort(function(a,b){return parseKey(b)-parseKey(a)});
+    return ks.map(function(k){
+      var d=log[k],dt=parseKey(k),w=d.week||'cali';
+      var picks=mealsOf(w).filter(function(m){return d.picks[m.id]}).map(function(m){return m.n+': '+d.picks[m.id][1]});
+      var rates=D.registro.escalas.filter(function(s){return d.rate[s.k]!=null}).map(function(s){return s.n+': '+s.ops[d.rate[s.k]]});
+      if(!picks.length&&!rates.length)return null;
+      return {k:k,t:dt.toLocaleDateString('es-CO',{weekday:'short',day:'numeric',month:'short'})+' · '+D.semanas[w].nombre,p:picks,r:rates};
+    }).filter(Boolean);
+  }
+  function renderHist(){
+    var L=lines();
+    $('#hist').innerHTML=L.length?L.map(function(l){return '<li><b>'+esc(l.t)+'</b>'+esc(l.p.join(' · ')||'Sin comidas marcadas')+(l.r.length?'<br><span class="muted">'+esc(l.r.join(' · '))+'</span>':'')+'</li>'}).join(''):'<li>Todavía no hay nada registrado. Toca la opción que escogiste en cada tiempo de comida y marca cómo te fue el día.</li>';
+  }
+  $('#copyLog').addEventListener('click',function(){
+    var L=lines();if(!L.length){toast('Aún no hay nada para copiar');return}
+    var txt='Registro de Manuela Giraldo\n\n'+L.map(function(l){return l.t+'\n'+(l.p.length?'· '+l.p.join('\n· '):'· Sin comidas marcadas')+(l.r.length?'\n'+l.r.join(' | '):'')}).join('\n\n');
+    var done=function(){toast('Copiado. Pégalo en WhatsApp')};
+    var fallback=function(){var ta=$('#copyArea');ta.value=txt;ta.select();try{document.execCommand('copy');done()}catch(e){toast('Selecciona y copia el texto manualmente')}};
+    try{navigator.clipboard.writeText(txt).then(done,fallback)}catch(e){fallback()}
+  });
+  var armT;
+  $('#clearLog').addEventListener('click',function(){
+    var b=this;
+    if(!b.classList.contains('armed')){b.classList.add('armed');b.textContent='Toca otra vez para borrar todo';clearTimeout(armT);armT=setTimeout(function(){b.classList.remove('armed');b.textContent='Borrar registro'},3000);return}
+    clearTimeout(armT);log={};saveLog();b.classList.remove('armed');b.textContent='Borrar registro';renderAllDay();toast('Registro borrado');
+  });
+
+  /* ---------- Suplementos, notas ---------- */
+  $('#supps').innerHTML=D.suplementos.map(function(s){return '<div class="card supp"><span class="new">Nuevo</span><h3>'+esc(s.n)+'</h3><p class="dose">'+esc(s.d)+'</p><p>'+esc(s.t)+'</p></div>'}).join('');
+  function accItem(t,b,open){return '<details'+(open?' open':'')+'><summary><span>'+esc(t)+'</span><span class="glass pm" aria-hidden="true">+</span></summary><div class="body">'+b.split('\n').map(function(p){return '<p>'+esc(p)+'</p>'}).join('')+'</div></details>'}
+  $('#notesAcc').innerHTML=D.notas.map(function(n,i){return accItem(n[0],n[1],i===0)}).join('');
+  $('#faqAcc').innerHTML=D.faq.map(function(f){return accItem(f[0],f[1])}).join('');
+
+  /* ---------- Mercado ---------- */
+  var shop=load('mq-shop',{});
+  function sid(c,i){return c.slice(0,3)+i}
+  function renderShop(){
+    var tot=0,got=0;
+    $('#shop').innerHTML=D.mercado.map(function(c){
+      var cg=0;var rows=c[1].map(function(it,i){tot++;var id=sid(c[0],i),on=!!shop[id];if(on){got++;cg++}return '<label class="item'+(on?' got':'')+'"><input type="checkbox" id="mq-'+id+'" data-s="'+id+'"'+(on?' checked':'')+'><span>'+esc(it)+'</span></label>'}).join('');
+      return '<div class="cat"><div class="cat-h"><h3>'+esc(c[0])+'</h3><span>'+cg+'/'+c[1].length+'</span></div>'+rows+'</div>';
+    }).join('');
+    $('#shopTxt').textContent=got+' / '+tot;$('#shopBar').style.width=(got/tot*100)+'%';
+  }
+  $('#shop').addEventListener('change',function(e){var i=e.target.closest('[data-s]');if(!i)return;if(i.checked)shop[i.dataset.s]=1;else delete shop[i.dataset.s];save('mq-shop',shop);renderShop()});
+  var armS;
+  $('#shopReset').addEventListener('click',function(){
+    var b=this;if(!b.classList.contains('is-on')){b.classList.add('is-on');b.textContent='Toca otra vez para desmarcar';clearTimeout(armS);armS=setTimeout(function(){b.classList.remove('is-on');b.textContent='Empezar semana nueva'},3000);return}
+    clearTimeout(armS);shop={};save('mq-shop',shop);b.classList.remove('is-on');b.textContent='Empezar semana nueva';renderShop();toast('Lista lista para la nueva semana');
+  });
+
+  /* ---------- Tips, porciones ---------- */
+  $('#recs').innerHTML=D.recs.map(function(r){return '<div class="rec"><h3>'+esc(r[0])+'</h3><p>'+esc(r[1])+'</p></div>'}).join('');
+  $('#hands').innerHTML=D.manos.map(function(h){return '<div class="hand"><h3>'+esc(h[0])+'</h3><b>'+esc(h[1])+'</b><p>'+esc(h[2])+'</p></div>'}).join('');
+  var pIdx=0;
+  function renderPort(){
+    $('#ptabs').innerHTML=D.porciones.map(function(p,i){return '<button class="glass pill'+(i===pIdx?' is-on':'')+'" type="button" role="tab" aria-selected="'+(i===pIdx)+'" data-p="'+i+'">'+esc(p[0])+'</button>'}).join('');
+    var c=D.porciones[pIdx];$('#pnote').textContent=c[1];$('#pnote').hidden=!c[1];
+    $('#plist').innerHTML=c[2].map(function(r){return '<div class="prow"><h4>'+esc(r[0])+'</h4><b>'+esc(r[1])+'</b>'+(r[2]?'<p>'+esc(r[2])+'</p>':'')+'</div>'}).join('');
+  }
+  $('#ptabs').addEventListener('click',function(e){var b=e.target.closest('[data-p]');if(!b)return;pIdx=+b.dataset.p;renderPort()});
+
+  /* ---------- Comer afuera ---------- */
+  $('#afueraIntro').textContent=D.afuera.intro;
+  $('#places').innerHTML=D.afuera.sitios.map(function(s,i){
+    return '<details class="place"'+(i===0?' open':'')+'><summary><h3>'+esc(s[0])+'</h3><span>'+esc(s[1])+'</span></summary><p class="ask"><b>Cómo pedirlo</b>'+esc(s[3])+'</p><p class="more">Ver los '+s[2].length+' consejos</p><ul>'+s[2].map(function(t){return '<li><span>'+esc(t)+'</span></li>'}).join('')+'</ul></details>';
+  }).join('');
+  $('#copyTel').addEventListener('click',function(){var t='3175499759';try{navigator.clipboard.writeText(t).then(function(){toast('Número copiado')},function(){toast('317 549 9759')})}catch(e){toast('317 549 9759')}});
+
+  /* ---------- Nav activa ---------- */
+  var pills=[].slice.call(document.querySelectorAll('#navWrap .pill'));
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){pills.forEach(function(p){var on=p.getAttribute('href')==='#'+en.target.id;p.classList.toggle('is-on',on);if(on)p.parentNode.scrollTo({left:p.offsetLeft-16,behavior:reduce?'auto':'smooth'})})}})},{rootMargin:'-45% 0px -50% 0px'});
+    document.querySelectorAll('main section[id]').forEach(function(s){io.observe(s)});
+  }
+
+  function renderAllDay(){renderDay();renderTabs();renderPanel();renderRates();renderHist()}
+  renderWater();renderWeeks();renderAllDay();renderShop();renderPort();
+
+  /* Medianoche: nuevo día */
+  setInterval(function(){var k=keyOf(new Date());if(k!==todayKey){todayKey=k;water={date:k,n:0};save('mq-water',water);renderWater();renderAllDay();renderCount();try{window.dispatchEvent(new Event('mq-progress'))}catch(e){}}},60000);
+
+  /* ================= ESCANEO 3D ================= */
+  var H=1.716;
+  var VAL={id:'val',n:'Valoración',s6:91,s8:117,iam:.93,mlg:43.27,w:60.7,cin:70.8,icc:.72};
+  var META={id:'meta',n:'Meta',s6:78,s8:117*78/91,iam:.80,mlg:43.27,w:60.7,cin:70.8,icc:.72};
+  function progress(){
+    var base=parseKey(load('mq-base',todayKey)),s=0,full=0,td=0;
+    for(var k in log){var d=log[k];if(parseKey(k)<base)continue;var tot=mealsOf(d.week||'cali').length,n=Object.keys(d.picks).length;s+=Math.min(n/tot,1);if(n>=tot)full++;if(k===todayKey)td=n}
+    return {d:s,full:full,today:td,tot:mealsOf(week).length};
+  }
+  function hoy(){
+    var p=progress(),t=Math.min(p.d/84,1),o={id:'hoy',n:'Hoy',proj:true,days:p.d};
+    ['s6','s8','iam','mlg','w','cin','icc'].forEach(function(k){o[k]=VAL[k]+(META[k]-VAL[k])*t});return o;
+  }
+  function states(){return [VAL,hoy(),META]}
+  var sel=load('mq-sel','hoy');
+  function getState(id){var a=states();for(var i=0;i<a.length;i++)if(a[i].id===id)return a[i];return a[1]}
+
+  var LEFT=[['w','Peso','kg',1,'n'],['h','Estatura','cm',1,'n'],['imc','IMC','',1,'n'],['cin','Cintura','cm',1,'n'],['icc','Cintura-cadera','',2,'n']];
+  var RIGHT=[['s6','Σ 6 pliegues','mm',1,'down',110,78],['s8','Σ 8 pliegues','mm',1,'down'],['iam','Índice adiposo-muscular','',2,'down',1.2,.8],['mlg','Masa libre de grasa','kg',2,'up']];
+  function val(s,k){if(k==='h')return 171.6;if(k==='imc')return s.w/(H*H);return s[k]}
+  function panel(el,rows,title){
+    el.innerHTML='<div class="hud-h"><span>'+title+'</span><span id="'+el.id+'-m"></span></div>'+rows.map(function(r){
+      return '<div class="st"><div class="st-top"><span class="st-l">'+r[1]+'</span><span class="dl" id="dl-'+r[0]+'"></span></div><p class="st-v"><span id="v-'+r[0]+'">'+fmt(val(VAL,r[0]),r[3])+'</span>'+(r[2]?'<small>'+r[2]+'</small>':'')+'</p>'+
+        (r[5]?'<div class="seg-bar"><i id="b-'+r[0]+'"></i><b style="left:'+(r[6]/r[5]*100)+'%" title="Meta"></b></div>':'')+'</div>';
+    }).join('');
+  }
+  panel($('#hudL'),LEFT,'Manuela');panel($('#hudR'),RIGHT,'Composición');
+  var shown={};
+  function tween(k,to,dec){
+    var el=document.getElementById('v-'+k);if(!el)return;var from=shown[k]==null?to:shown[k];shown[k]=to;
+    if(reduce||Math.abs(from-to)<1e-6){el.textContent=fmt(to,dec);return}
+    var t0=performance.now();(function f(t){var p=Math.min((t-t0)/750,1),e=1-Math.pow(1-p,3);el.textContent=fmt(from+(to-from)*e,dec);if(p<1)requestAnimationFrame(f)})(t0);
+  }
+  var ZONES=[
+    {k:'abd',label:'Abdomen',a:[0,1.12,.1],n:[0,0,1],w:.9},
+    {k:'cad',label:'Cadera',a:[.17,.94,.02],n:[1,0,.2],w:1},
+    {k:'mus',label:'Muslo',a:[-.1,.72,.07],n:[-.2,0,1],w:.85},
+    {k:'tri',label:'Tríceps',a:[.185,1.26,-.04],n:[.6,0,-.8],w:.6,minor:true},
+    {k:'glu',label:'Glúteo',a:[-.08,.9,-.12],n:[0,0,-1],w:.9,minor:true}
+  ];
+  function fOf(s){return Math.max(0,Math.min(1.1,(s.s6-60)/40))}
+  function level(a){return a>.62?'Zona a trabajar':a>.42?'En progreso':'Muy bien'}
+  function heat(a){return a>.62?'#E0558C':a>.42?'#F08BB0':'#4FB38C'}
+  $('#tags').innerHTML=ZONES.map(function(z){return '<div class="zt'+(z.minor?' minor':'')+'" data-z="'+z.k+'"><span class="zt-dot"></span><span class="zt-line"></span><span class="zt-box">'+z.label+'<b></b></span></div>'}).join('');
+  ZONES.forEach(function(z){z.el=document.querySelector('.zt[data-z="'+z.k+'"]')});
+
+  var scene3d=null;
+  function render3d(){
+    var s=getState(sel),p=progress(),f=fOf(s);
+    LEFT.concat(RIGHT).forEach(function(r){
+      var v=val(s,r[0]);tween(r[0],v,r[3]);var dl=document.getElementById('dl-'+r[0]),d=v-val(VAL,r[0]);
+      if(s.id==='val'){dl.textContent=r[0]==='s6'?'META 78':'BASE';dl.className='dl'}
+      else if(Math.abs(d)<0.005||r[4]==='n'||r[4]==='up'){dl.textContent=r[4]==='up'?'MANTENER':'±0';dl.className='dl'+(r[4]==='up'?' good':'')}
+      else{dl.textContent=(d>0?'+':'−')+fmt(Math.abs(d),r[3]);dl.className='dl'+(d<0?' good':'')}
+      if(r[5])document.getElementById('b-'+r[0]).style.width=Math.min(v/r[5]*100,100)+'%';
+    });
+    $('#hudL-m').textContent=$('#hudR-m').textContent=s.id==='val'?'MEDIDO':s.id==='meta'?'META':'ESTIMADO';
+    $('#stageMode').innerHTML='<b>'+(s.id==='val'?'VALORACIÓN · MEDIDO':s.id==='meta'?'META · 22 NOV':'HOY · ESTIMADO')+'</b>';
+    ZONES.forEach(function(z){var a=f*z.w;z.el.style.setProperty('--zc',heat(a));z.el.querySelector('b').textContent=level(a)});
+    var n=daysLeft();
+    if(s.id==='meta'){$('#badgeNum').innerHTML='78 <em>mm</em>';$('#badgeLabel').textContent='tu meta de Σ 6 pliegues para el control'}
+    else if(s.id==='hoy'&&s.s6<90.95){$('#badgeNum').innerHTML='−'+fmt(91-s.s6)+' <em>mm</em>';$('#badgeLabel').textContent='estimado desde tu valoración · faltan '+Math.max(n,0)+' días para el control'}
+    else{$('#badgeNum').innerHTML=(n>0?n:0)+' <em>'+(n===1?'día':'días')+'</em>';$('#badgeLabel').textContent='para tu primer control · 22 de noviembre'}
+    $('#projNote').textContent=s.id==='hoy'
+      ?'"Hoy" es una estimación: avanza desde tu valoración hacia la meta de 78 mm con cada comida que registras ('+(p.d<0.2?'aún sin días registrados':fmt(p.d)+' días de plan cumplido')+'). La antropometría del control la reemplaza por el dato real.'
+      :s.id==='meta'?'La meta que fijó Juan Sebastián para los tres meses: bajar pliegues sin perder músculo. El peso no cambia.'
+      :'Medición real de tu valoración (protocolo ISAK). La figura es ilustrativa: las zonas se tiñen según tu sumatoria de pliegues.';
+    if(scene3d)scene3d.setTarget(s);
+  }
+  function renderTL(){
+    var p=progress();
+    $('#tl').innerHTML=states().map(function(s){var on=s.id===sel;return '<button class="glass'+(on?' is-on':'')+'" type="button" data-c="'+s.id+'" aria-pressed="'+on+'">'+s.n+'<small>'+(s.id==='hoy'?'estimado':fmt(s.s6)+' mm')+'</small></button>'}).join('');
+    $('#xp').innerHTML='<span>Hoy llevas <b>'+p.today+'/'+p.tot+'</b> comidas registradas · Días con el plan completo: <b>'+p.full+'</b></span><span class="xp-bar"><i style="width:'+(p.today/p.tot*100)+'%"></i></span>';
+  }
+  $('#tl').addEventListener('click',function(e){var b=e.target.closest('[data-c]');if(!b)return;sel=b.dataset.c;save('mq-sel',sel);renderTL();render3d()});
+  window.addEventListener('mq-progress',function(){renderTL();if(sel==='hoy')render3d()});
+
+  (function(){if(reduce)return;var h='';for(var i=0;i<26;i++)h+='<i style="--x:'+(Math.random()*100).toFixed(1)+'%;--z:'+(3+Math.random()*5).toFixed(1)+'px;--o:'+(.35+Math.random()*.5).toFixed(2)+';--t:'+(10+Math.random()*10).toFixed(1)+'s;--dl:-'+(Math.random()*17).toFixed(1)+'s;--dx:'+Math.round(Math.random()*76-38)+'px"></i>';$('#px').innerHTML=h})();
+  (function(){var rx=$('#rx'),head=$('#head');if(reduce)return;head.addEventListener('pointermove',function(e){var r=head.getBoundingClientRect();rx.style.setProperty('--px',(((e.clientX-r.left)/r.width)*2-1).toFixed(3));rx.style.setProperty('--py',(((e.clientY-r.top)/r.height)*2-1).toFixed(3))});head.addEventListener('pointerleave',function(){rx.style.setProperty('--px',0);rx.style.setProperty('--py',0)})})();
+
+  /* Geometría en segundo plano */
+  var worker=null,pending={},cache={};
+  try{
+    var src=document.getElementById('mq-bodygeo').textContent;
+    var wsrc='var window=self;'+src+';self.onmessage=function(e){var g=self.JGBody.build(e.data.p,e.data.cs);self.postMessage({key:e.data.key,pos:g.pos,nor:g.nor,idx:g.idx},[g.pos.buffer,g.nor.buffer,g.idx.buffer])};';
+    worker=new Worker(URL.createObjectURL(new Blob([wsrc],{type:'text/javascript'})));
+    worker.onmessage=function(e){var d=e.data;cache[d.key]=d;var cb=pending[d.key];delete pending[d.key];if(cb)cb.forEach(function(f){f(d)})};
+    worker.onerror=function(){worker=null};
+  }catch(e){worker=null}
+  function getGeo(key,p,cb){
+    if(cache[key]){cb(cache[key]);return}
+    if(pending[key]){pending[key].push(cb);return}
+    pending[key]=[cb];var cs=(window.innerWidth<600)?.0095:.008;
+    if(worker)worker.postMessage({key:key,p:p,cs:cs});
+    else setTimeout(function(){var g=window.JGBody.build(p,cs);var d={key:key,pos:g.pos,nor:g.nor,idx:g.idx};cache[key]=d;var c=pending[key];delete pending[key];c.forEach(function(f){f(d)})},30);
+  }
+
+  function initThree(){
+    var T=window.THREE,stage=$('#stage'),canvas=$('#body3d');
+    if(!T||!window.JGBody)return null;
+    var renderer;try{renderer=new T.WebGLRenderer({canvas:canvas,antialias:true,alpha:true})}catch(e){return null}
+    if(!renderer.getContext())return null;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));renderer.setClearColor(0x000000,0);
+    var scene=new T.Scene(),cam=new T.PerspectiveCamera(30,1,.1,50);cam.position.set(0,.98,3.85);cam.lookAt(0,.88,0);
+    var ld=document.createElement('span');ld.className='scan-load';ld.textContent='Generando tu figura…';stage.appendChild(ld);
+    var U={uTime:{value:0},uScan:{value:-1},uSkin:{value:new T.Color('#F3D2DC')},uRim:{value:new T.Color('#FF8FB8')},
+      uZ:{value:[new T.Vector4(0,1.13,.08,.08),new T.Vector4(.15,.94,0,.07),new T.Vector4(.075,.9,-.08,.075),new T.Vector4(.095,.7,.03,.09),new T.Vector4(.172,1.26,-.04,.05)]},
+      uA:{value:[0,0,0,0,0]}};
+    var VS='varying vec3 vN;varying vec3 vV;varying vec3 vP;void main(){vP=position;vec4 mv=modelViewMatrix*vec4(position,1.0);vN=normalize(normalMatrix*normal);vV=normalize(-mv.xyz);gl_Position=projectionMatrix*mv;}';
+    var FS=[
+      'uniform float uTime;uniform float uScan;uniform float uCut;uniform float uSide;uniform vec3 uSkin;uniform vec3 uRim;uniform vec4 uZ[5];uniform float uA[5];',
+      'varying vec3 vN;varying vec3 vV;varying vec3 vP;',
+      'void main(){',
+      ' if(uSide*(vP.y-uCut)>0.0)discard;',
+      ' vec3 n=normalize(vN);vec3 v=normalize(vV);if(dot(n,v)<0.0)n=-n;',
+      ' vec3 L=normalize(vec3(0.45,0.8,0.6));float dif=max(dot(n,L),0.0);',
+      ' vec3 L2=normalize(vec3(-0.7,0.15,-0.5));float back=max(dot(n,L2),0.0);',
+      ' vec3 hv=normalize(L+v);float sp=pow(max(dot(n,hv),0.0),28.0)*0.22;',
+      ' float fr=pow(1.0-max(dot(n,v),0.0),2.0);',
+      ' float ao=0.6+0.4*smoothstep(0.0,0.6,n.y*0.5+0.5);',
+      ' vec3 c=uSkin*(0.32+0.68*dif)*ao+vec3(0.85,0.75,1.0)*back*0.12+vec3(sp)+uRim*fr*0.45;',
+      ' vec3 q=vec3(abs(vP.x),vP.y,vP.z);float ht=0.0;',
+      ' for(int i=0;i<5;i++){vec3 dd=q-uZ[i].xyz;ht+=uA[i]*exp(-dot(dd,dd)/(uZ[i].w*uZ[i].w));}',
+      ' ht=clamp(ht,0.0,1.0);',
+      ' vec3 hc=mix(vec3(1.0,0.72,0.84),vec3(0.9,0.3,0.55),ht);',
+      ' float pulse=0.85+0.15*sin(uTime*2.0);',
+      ' c=mix(c,hc*(0.55+0.45*dif),ht*0.55*pulse);',
+      ' c+=vec3(1.0,0.85,0.92)*exp(-pow((vP.y-uScan)*16.0,2.0))*0.2;',
+      ' c+=vec3(1.0,0.55,0.75)*exp(-pow((vP.y-uCut)*55.0,2.0))*1.4;',
+      ' gl_FragColor=vec4(c,1.0);',
+      '}'].join('\n');
+    function bodyMat(){return new T.ShaderMaterial({uniforms:{uTime:U.uTime,uScan:U.uScan,uSkin:U.uSkin,uRim:U.uRim,uZ:U.uZ,uA:U.uA,uCut:{value:9},uSide:{value:1}},vertexShader:VS,fragmentShader:FS,side:T.DoubleSide})}
+    var g=new T.Group();g.scale.setScalar(.97);scene.add(g);
+    function ringMat(c,o){return new T.MeshBasicMaterial({color:c,transparent:true,opacity:o,depthWrite:false,side:T.DoubleSide})}
+    var r1=new T.Mesh(new T.RingGeometry(.32,.336,96),ringMat('#EC7FA9',.9));r1.rotation.x=-Math.PI/2;r1.position.y=.002;scene.add(r1);
+    var r2=new T.Mesh(new T.RingGeometry(.42,.426,96,1,0,Math.PI*1.4),ringMat('#F49CBB',.7));r2.rotation.x=-Math.PI/2;scene.add(r2);
+    var r3=new T.Mesh(new T.RingGeometry(.5,.504,96,1,0,Math.PI*.55),ringMat('#B9A2EC',.7));r3.rotation.x=-Math.PI/2;scene.add(r3);
+    var disc=new T.Mesh(new T.CircleGeometry(.56,64),new T.ShaderMaterial({vertexShader:'varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',fragmentShader:'varying vec2 vUv;void main(){float d=length(vUv-0.5)*2.0;float a=pow(max(1.0-d,0.0),2.0)*0.55;gl_FragColor=vec4(vec3(0.96,0.6,0.74),a);}',transparent:true,depthWrite:false}));
+    disc.rotation.x=-Math.PI/2;disc.position.y=.001;scene.add(disc);
+
+    var meshCur=null,trans=null,want=null,aCur=[0,0,0,0,0],aTgt=[0,0,0,0,0];
+    function makeMesh(d){var geo=new T.BufferGeometry();geo.setAttribute('position',new T.BufferAttribute(d.pos,3));geo.setAttribute('normal',new T.BufferAttribute(d.nor,3));geo.setIndex(new T.BufferAttribute(d.idx,1));return new T.Mesh(geo,bodyMat())}
+    function finish(){if(trans.old){g.remove(trans.old);trans.old.geometry.dispose();trans.old.material.dispose()}trans.m.material.uniforms.uCut.value=9;meshCur=trans.m;trans=null}
+    function show(d){
+      if(ld.parentNode)ld.parentNode.removeChild(ld);
+      var m=makeMesh(d);g.add(m);if(trans)finish();
+      if(reduce){if(meshCur){g.remove(meshCur);meshCur.geometry.dispose()}meshCur=m;return}
+      m.material.uniforms.uSide.value=1;m.material.uniforms.uCut.value=-.05;
+      if(meshCur){meshCur.material.uniforms.uSide.value=-1;meshCur.material.uniforms.uCut.value=-.05}
+      trans={m:m,old:meshCur,t0:performance.now()};
+    }
+    function setTarget(s){
+      var f=fOf(s),key=s.id==='hoy'?'hoy:'+f.toFixed(3):s.id;want=key;
+      aTgt=[.9,1,.9,.85,.6].map(function(w){return Math.max(0,f*w-.15)*1.05});
+      getGeo(key,{f:f},function(d){if(want===key)show(d)});
+    }
+    function prefetch(){[VAL,META].forEach(function(s){getGeo(s.id,{f:fOf(s)},function(){})})}
+
+    var rot=-.35,drag=null,last=performance.now(),running=true,raf=0,Y=new T.Vector3(0,1,0),v3=new T.Vector3(),nv=new T.Vector3();
+    canvas.addEventListener('pointerdown',function(e){drag={x:e.clientX,r:rot};try{canvas.setPointerCapture(e.pointerId)}catch(_){}});
+    canvas.addEventListener('pointermove',function(e){if(drag)rot=drag.r+(e.clientX-drag.x)*.011});
+    function endDrag(){drag=null}canvas.addEventListener('pointerup',endDrag);canvas.addEventListener('pointercancel',endDrag);
+    function size(){var w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);cam.aspect=w/h;cam.fov=w/h<.72?35:30;cam.updateProjectionMatrix()}
+    size();if('ResizeObserver' in window)new ResizeObserver(size).observe(stage);else window.addEventListener('resize',size);
+    function tags(){
+      var w=stage.clientWidth,h=stage.clientHeight;g.updateMatrixWorld();
+      ZONES.forEach(function(z){
+        if(!meshCur&&!trans){z.el.style.opacity=0;return}
+        v3.set(z.a[0],z.a[1],z.a[2]).applyMatrix4(g.matrixWorld).project(cam);
+        var x=(v3.x*.5+.5)*w,y=(-v3.y*.5+.5)*h;
+        nv.set(z.n[0],z.n[1],z.n[2]).normalize().applyAxisAngle(Y,g.rotation.y);
+        var o=Math.max(0,Math.min(1,(nv.z+.15)*1.8)),left=x<w/2;
+        z.el.classList.toggle('left',left);
+        z.el.style.transform=left?'translate(calc('+x.toFixed(1)+'px - 100% + 4px),calc('+y.toFixed(1)+'px - 50%))':'translate('+(x-4).toFixed(1)+'px,calc('+y.toFixed(1)+'px - 50%))';
+        z.el.style.opacity=o.toFixed(2);
+      });
+    }
+    function frame(t){
+      if(!running){raf=0;return}
+      var dt=Math.min((t-last)/1000,.05);last=t;
+      U.uTime.value=reduce?0:t/1000;U.uScan.value=reduce?-1:((t/1000)*.42)%2.3-.2;
+      if(!drag&&!reduce)rot+=dt*.32;g.rotation.y=rot;
+      var k=reduce?1:1-Math.pow(.03,dt);for(var i=0;i<5;i++){aCur[i]+=(aTgt[i]-aCur[i])*k;U.uA.value[i]=aCur[i]}
+      if(trans){var p=Math.min((t-trans.t0)/1100,1),cut=-.05+1.85*(1-Math.pow(1-p,2));trans.m.material.uniforms.uCut.value=cut;if(trans.old)trans.old.material.uniforms.uCut.value=cut;if(p>=1)finish()}
+      r1.rotation.z+=dt*.5;r2.rotation.z-=dt*.3;r3.rotation.z+=dt*.18;
+      renderer.render(scene,cam);tags();raf=requestAnimationFrame(frame);
+    }
+    function start(){if(!raf){running=true;last=performance.now();raf=requestAnimationFrame(frame)}}
+    if('IntersectionObserver' in window)new IntersectionObserver(function(es){running=es[0].isIntersecting;if(running)start()}).observe(stage);
+    document.addEventListener('visibilitychange',function(){running=!document.hidden;if(running)start()});
+    start();
+    return {setTarget:setTarget,prefetch:prefetch};
+  }
+  scene3d=initThree();
+  if(!scene3d)$('#stage').classList.add('no3d');
+  renderTL();render3d();
+  if(scene3d)setTimeout(scene3d.prefetch,1500);
+})();
+</script>
+
+</body>
+</html>
